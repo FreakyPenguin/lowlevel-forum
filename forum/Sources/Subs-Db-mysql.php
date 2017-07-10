@@ -812,6 +812,9 @@ class SMF_DB_MySQLi
 			false
 		);
 
+                // Make sure connection is utf8 encoded
+                mysqli_set_charset($connection, 'utf8');
+
 		return $connection;
 	}
 
