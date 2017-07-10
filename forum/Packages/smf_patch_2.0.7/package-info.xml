@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE package-info SYSTEM "http://www.simplemachines.org/xml/package-info">
+<package-info xmlns="http://www.simplemachines.org/xml/package-info" xmlns:smf="http://www.simplemachines.org/">
+	<id>smf:smf-2.0.7</id>
+	<name>SMF 2.0.7 Update</name>
+	<version>1.0</version>
+	<type>modification</type>
+
+	<install for="2.0.6">
+		<readme type="inline">
+			This patch file will provide bug fixes to your SMF 2.0.6 forum.
+		</readme>
+		<modification type="file" format="xml">smf_2-0-7_patch.xml</modification>
+		<code>fix_calendar.php</code>
+	</install>
+	<uninstall for="2.0.7">
+		<readme type="inline">
+			This will uninstall the bug fixes of your SMF 2.0.7 forum. This is generally NOT a good idea.
+		</readme>
+		<modification type="file" reverse="true" format="xml">smf_2-0-7_patch.xml</modification>
+	</uninstall>
+</package-info>

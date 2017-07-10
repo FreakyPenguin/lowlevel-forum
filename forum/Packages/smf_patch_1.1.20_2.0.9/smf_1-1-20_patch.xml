@@ -1,0 +1,179 @@
+<?xml version="1.0"?>
+<!DOCTYPE modification SYSTEM "http://www.simplemachines.org/xml/modification">
+<modification xmlns="http://www.simplemachines.org/xml/modification" xmlns:smf="http://www.simplemachines.org/">
+	<id>smf:smf-1.1.20</id>
+	<version>1.0</version>
+
+	<!--
+	This addresses a few bugs and minor security issues with 1.1.19 and earlier
+	-->
+
+	<file name="$boarddir/index.php">
+		<operation>
+			<search position="replace"><![CDATA[
+* Software Version:           SMF 1.1.19                                          *
+]]></search>
+			<add><![CDATA[
+* Software Version:           SMF 1.1.20                                          *
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+$forum_version = 'SMF 1.1.19';
+]]></search>
+			<add><![CDATA[
+$forum_version = 'SMF 1.1.20';
+]]></add>
+		</operation>
+	</file>
+	<file name="$sourcedir/PackageGet.php">
+		<operation>
+			<search position="replace"><![CDATA[
+* Software Version:           SMF 1.1.12                                          *
+]]></search>
+			<add><![CDATA[
+* Software Version:           SMF 1.1.20                                          *
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+				$package['href'] = $url . '/' . $package['filename'];
+				$package['name'] = htmlspecialchars($package['name']);
+]]></search>
+			<add><![CDATA[
+				$package['href'] = $url . '/' . $package['filename'];
+]]></add>
+		</operation>
+	</file>
+	<file name="$sourcedir/Subs-Package.php">
+		<operation>
+			<search position="replace"><![CDATA[
+* Software Version:           SMF 1.1.12                                           *
+]]></search>
+			<add><![CDATA[
+* Software Version:           SMF 1.1.20                                          *
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+		// Ignore errors with borked installed.list's.
+		list ($name, $file, $id, $version) = array_pad(explode('|^|', $installed_mods[$i]), 4, '');
+]]></search>
+			<add><![CDATA[
+		// Ignore errors with borked installed.list's.
+		$info = array_pad(explode('|^|', $installed_mods[$i]), 4, '');		
+
+		list ($name, $file, $id, $version) = htmlspecialchars__recursive($info);
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+		$data .= trim($packageInfo['name']) . '|^|' . trim($packageInfo['filename']) . '|^|' . trim($packageInfo['id']) . '|^|' . trim($packageInfo['version']) . "\n";
+]]></search>
+			<add><![CDATA[
+		$keys = array('name', 'filename', 'id', 'version');
+		foreach($keys as $key)
+		{
+			// Yay for variable variables...
+			${"package_$key"} = trim(un_htmlspecialchars($packageInfo[$key]));
+		}
+		$data .= $package_name . '|^|' . $package_filename . '|^|' . $package_id . '|^|' . $package_version . "\n";
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+	$package = $packageInfo->to_array();
+	$package['xml'] = $packageInfo;
+	$package['filename'] = $gzfilename;
+]]></search>
+			<add><![CDATA[
+	$package = $packageInfo->to_array();
+	$package = htmlspecialchars__recursive($package);
+	$package['xml'] = $packageInfo;	
+	$package['filename'] = $gzfilename;
+
+	// Don't want to mess with code...
+	$types = array('install', 'uninstall', 'upgrade');
+	foreach($types as $type)
+	{
+		if (isset($package[$type]['code']))
+		{
+			$package[$type]['code'] = un_htmlspecialchars($package[$type]['code']);
+		}
+	}
+]]></add>
+		</operation>
+	</file>
+	<file name="$sourcedir/Packages.php">
+		<operation>
+			<search position="replace"><![CDATA[
+* Software Version:           SMF 1.1.16                                          *
+]]></search>
+			<add><![CDATA[
+* Software Version:           SMF 1.1.20                                          *
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+			if (!empty($action['parse_bbc']))
+				$context['package_readme'] = parse_bbc($context['package_readme']);
+]]></search>
+			<add><![CDATA[
+			if (!empty($action['parse_bbc']))
+			{
+				$context['package_readme'] = preg_replace('~\[[/]?html\]~i', '', $context['package_readme']);
+				$context['package_readme'] = parse_bbc($context['package_readme']);
+			}
+]]></add>
+		</operation>
+	</file>
+	<file name="$sourcedir/Post.php">
+		<operation>
+			<search position="replace"><![CDATA[
+* Software Version:           SMF 1.1.11                                          *
+]]></search>
+			<add><![CDATA[
+* Software Version:           SMF 1.1.20                                          *
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+	if (isset($_REQUEST['preview']))
+		return Post();
+]]></search>
+			<add><![CDATA[
+	if (isset($_REQUEST['preview']))
+	{
+		checkSession();
+		return Post();
+	}
+]]></add>
+		</operation>
+	</file>
+	<file name="$sourcedir/Subs-Auth.php">
+		<operation>
+			<search position="replace"><![CDATA[
+* Software Version:           SMF 1.1.19                                          *
+]]></search>
+			<add><![CDATA[
+* Software Version:           SMF 1.1.20                                          *
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+	global $txt, $mtitle, $mmessage, $context;
+]]></search>
+			<add><![CDATA[
+	global $txt, $mtitle, $mmessage, $context, $func;
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+	$context['title'] = &$mtitle;
+]]></search>
+			<add><![CDATA[
+	$context['title'] = $func['htmlspecialchars']($mtitle);
+]]></add>
+		</operation>
+	</file>
+</modification>

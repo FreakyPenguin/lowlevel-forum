@@ -1,0 +1,870 @@
+<?xml version="1.0"?>
+<!DOCTYPE modification SYSTEM "http://www.simplemachines.org/xml/modification">
+<modification xmlns="http://www.simplemachines.org/xml/modification" xmlns:smf="http://www.simplemachines.org/">
+	<id>smf:smf-2.0.11</id>
+	<version>1.0</version>
+
+	<!-- Usual version update -->
+	<file name="$boarddir/index.php">
+		<operation>
+			<search position="replace"><![CDATA[* @version 2.0.11]]></search>
+			<add><![CDATA[* @version 2.0.12]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$forum_version = 'SMF 2.0.11';]]></search>
+			<add><![CDATA[$forum_version = 'SMF 2.0.12';]]></add>
+		</operation>
+	</file>
+	
+	<!-- Update the copyright year -->
+	<file name="$languagedir/index.english.php">
+		<operation error="ignore">
+			<search position="replace"><![CDATA[// Version: 2.0.10; index]]></search>
+			<add><![CDATA[// Version: 2.0.12; index]]></add>
+		</operation>
+		<operation error="ignore">
+			<search position="replace"><![CDATA[ <a href="http://www.simplemachines.org/about/smf/license.php" title="License" target="_blank" class="new_win">SMF &copy; 2015</a>, <a href="http://www.simplemachines.org" title="Simple Machines" target="_blank" class="new_win">Simple Machines</a>';]]></search>
+			<add><![CDATA[ <a href="http://www.simplemachines.org/about/smf/license.php" title="License" target="_blank" class="new_win">SMF &copy; 2016</a>, <a href="http://www.simplemachines.org" title="Simple Machines" target="_blank" class="new_win">Simple Machines</a>';]]></add>
+		</operation>
+	</file>
+	<file name="$languagedir/index.english-utf8.php" error="skip">
+		<operation error="ignore">
+			<search position="replace"><![CDATA[// Version: 2.0.10; index]]></search>
+			<add><![CDATA[// Version: 2.0.12; index]]></add>
+		</operation>
+		<operation error="ignore">
+			<search position="replace"><![CDATA[ <a href="http://www.simplemachines.org/about/smf/license.php" title="License" target="_blank" class="new_win">SMF &copy; 2015</a>, <a href="http://www.simplemachines.org" title="Simple Machines" target="_blank" class="new_win">Simple Machines</a>';]]></search>
+			<add><![CDATA[ <a href="http://www.simplemachines.org/about/smf/license.php" title="License" target="_blank" class="new_win">SMF &copy; 2016</a>, <a href="http://www.simplemachines.org" title="Simple Machines" target="_blank" class="new_win">Simple Machines</a>';]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Admin.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$context['admin_preferences'] = !empty($options['admin_preferences']) ? unserialize($options['admin_preferences']) : array();]]></search>
+			<add><![CDATA[$context['admin_preferences'] = !empty($options['admin_preferences']) ? safe_unserialize($options['admin_preferences']) : array();]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Calendar.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0]]></search>
+			<add><![CDATA[@version 2.0.11]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$context['clockicons'] = unserialize(base64_decode('YTo2OntzOjI6ImgxIjthOjI6e2k6MDtpOjI7aToxO2k6MTt9czoyOiJoMiI7YTo0OntpOjA7aTo4O2k6MTtpOjQ7aToyO2k6MjtpOjM7aToxO31zOjI6Im0xIjthOjM6e2k6MDtpOjQ7aToxO2k6MjtpOjI7aToxO31zOjI6Im0yIjthOjQ6e2k6MDtpOjg7aToxO2k6NDtpOjI7aToyO2k6MztpOjE7fXM6MjoiczEiO2E6Mzp7aTowO2k6NDtpOjE7aToyO2k6MjtpOjE7fXM6MjoiczIiO2E6NDp7aTowO2k6ODtpOjE7aTo0O2k6MjtpOjI7aTozO2k6MTt9fQ=='));]]></search>
+			<add><![CDATA[$context['clockicons'] = safe_unserialize(base64_decode('YTo2OntzOjI6ImgxIjthOjI6e2k6MDtpOjI7aToxO2k6MTt9czoyOiJoMiI7YTo0OntpOjA7aTo4O2k6MTtpOjQ7aToyO2k6MjtpOjM7aToxO31zOjI6Im0xIjthOjM6e2k6MDtpOjQ7aToxO2k6MjtpOjI7aToxO31zOjI6Im0yIjthOjQ6e2k6MDtpOjg7aToxO2k6NDtpOjI7aToyO2k6MztpOjE7fXM6MjoiczEiO2E6Mzp7aTowO2k6NDtpOjE7aToyO2k6MjtpOjE7fXM6MjoiczIiO2E6NDp7aTowO2k6ODtpOjE7aTo0O2k6MjtpOjI7aTozO2k6MTt9fQ=='));]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$context['clockicons'] = unserialize(base64_decode('YTozOntzOjE6ImgiO2E6NTp7aTowO2k6MTY7aToxO2k6ODtpOjI7aTo0O2k6MztpOjI7aTo0O2k6MTt9czoxOiJtIjthOjY6e2k6MDtpOjMyO2k6MTtpOjE2O2k6MjtpOjg7aTozO2k6NDtpOjQ7aToyO2k6NTtpOjE7fXM6MToicyI7YTo2OntpOjA7aTozMjtpOjE7aToxNjtpOjI7aTo4O2k6MztpOjQ7aTo0O2k6MjtpOjU7aToxO319'));]]></search>
+			<add><![CDATA[$context['clockicons'] = safe_unserialize(base64_decode('YTozOntzOjE6ImgiO2E6NTp7aTowO2k6MTY7aToxO2k6ODtpOjI7aTo0O2k6MztpOjI7aTo0O2k6MTt9czoxOiJtIjthOjY6e2k6MDtpOjMyO2k6MTtpOjE2O2k6MjtpOjg7aTozO2k6NDtpOjQ7aToyO2k6NTtpOjE7fXM6MToicyI7YTo2OntpOjA7aTozMjtpOjE7aToxNjtpOjI7aTo4O2k6MztpOjQ7aTo0O2k6MjtpOjU7aToxO319'));]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$context['clockicons'] = unserialize(base64_decode('YTo2OntzOjQ6InllYXIiO2E6Nzp7aTowO2k6NjQ7aToxO2k6MzI7aToyO2k6MTY7aTozO2k6ODtpOjQ7aTo0O2k6NTtpOjI7aTo2O2k6MTt9czo1OiJtb250aCI7YTo0OntpOjA7aTo4O2k6MTtpOjQ7aToyO2k6MjtpOjM7aToxO31zOjM6ImRheSI7YTo1OntpOjA7aToxNjtpOjE7aTo4O2k6MjtpOjQ7aTozO2k6MjtpOjQ7aToxO31zOjQ6ImhvdXIiO2E6NTp7aTowO2k6MTY7aToxO2k6ODtpOjI7aTo0O2k6MztpOjI7aTo0O2k6MTt9czozOiJtaW4iO2E6Njp7aTowO2k6MzI7aToxO2k6MTY7aToyO2k6ODtpOjM7aTo0O2k6NDtpOjI7aTo1O2k6MTt9czozOiJzZWMiO2E6Njp7aTowO2k6MzI7aToxO2k6MTY7aToyO2k6ODtpOjM7aTo0O2k6NDtpOjI7aTo1O2k6MTt9fQ=='));]]></search>
+			<add><![CDATA[$context['clockicons'] = safe_unserialize(base64_decode('YTo2OntzOjQ6InllYXIiO2E6Nzp7aTowO2k6NjQ7aToxO2k6MzI7aToyO2k6MTY7aTozO2k6ODtpOjQ7aTo0O2k6NTtpOjI7aTo2O2k6MTt9czo1OiJtb250aCI7YTo0OntpOjA7aTo4O2k6MTtpOjQ7aToyO2k6MjtpOjM7aToxO31zOjM6ImRheSI7YTo1OntpOjA7aToxNjtpOjE7aTo4O2k6MjtpOjQ7aTozO2k6MjtpOjQ7aToxO31zOjQ6ImhvdXIiO2E6NTp7aTowO2k6MTY7aToxO2k6ODtpOjI7aTo0O2k6MztpOjI7aTo0O2k6MTt9czozOiJtaW4iO2E6Njp7aTowO2k6MzI7aToxO2k6MTY7aToyO2k6ODtpOjM7aTo0O2k6NDtpOjI7aTo1O2k6MTt9czozOiJzZWMiO2E6Njp7aTowO2k6MzI7aToxO2k6MTY7aToyO2k6ODtpOjM7aTo0O2k6NDtpOjI7aTo1O2k6MTt9fQ=='));]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/DbPackages-mysql.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$unsigned = in_array($type, array('int', 'tinyint', 'smallint', 'mediumint', 'bigint')) && !empty($column['unsigned']) ? 'unsigned ' : '';]]></search>
+			<add><![CDATA[$unsigned = in_array($type, array('int', 'tinyint', 'smallint', 'mediumint', 'bigint', 'float')) && !empty($column_info['unsigned']) ? 'unsigned ' : '';]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$unsigned = in_array($type, array('int', 'tinyint', 'smallint', 'mediumint', 'bigint')) && !empty($column_info['unsigned']) ? 'unsigned ' : '';]]></search>
+			<add><![CDATA[$unsigned = in_array($type, array('int', 'tinyint', 'smallint', 'mediumint', 'bigint', 'float')) && !empty($column_info['unsigned']) ? 'unsigned ' : '';]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$unsigned = in_array($type, array('int', 'tinyint', 'smallint', 'mediumint', 'bigint')) && !empty($column_info['unsigned']) ? 'unsigned ' : '';]]></search>
+			<add><![CDATA[$unsigned = in_array($type, array('int', 'tinyint', 'smallint', 'mediumint', 'bigint', 'float')) && !empty($column_info['unsigned']) ? 'unsigned ' : '';]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Display.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.9]]></search>
+			<add><![CDATA[@version 2.0.11]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$modSettings['attachmentUploadDir'] = @unserialize($modSettings['attachmentUploadDir']);]]></search>
+			<add><![CDATA[$modSettings['attachmentUploadDir'] = safe_unserialize($modSettings['attachmentUploadDir']);]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Load.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.11]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$integration_settings = unserialize(SMF_INTEGRATION_SETTINGS);]]></search>
+			<add><![CDATA[$integration_settings = safe_unserialize(SMF_INTEGRATION_SETTINGS);]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$context['display_fields'] = unserialize($modSettings['displayFields']);]]></search>
+			<add><![CDATA[$context['display_fields'] = safe_unserialize($modSettings['displayFields']);]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[return @unserialize($value);]]></search>
+			<add><![CDATA[return safe_unserialize($value);]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/LogInOut.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.11]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[elseif (!empty($_POST['cookielength']) && ($_POST['cookielength'] >= 1 || $_POST['cookielength'] <= 525600))]]></search>
+			<add><![CDATA[elseif (!empty($_POST['cookielength']) && ($_POST['cookielength'] >= 1 && $_POST['cookielength'] <= 525600))]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/ManageAttachments.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.10]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$attach_dirs = unserialize($modSettings['attachmentUploadDir']);]]></search>
+			<add><![CDATA[$attach_dirs = safe_unserialize($modSettings['attachmentUploadDir']);]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$modSettings['attachmentUploadDir'] = unserialize($modSettings['attachmentUploadDir']);]]></search>
+			<add><![CDATA[$modSettings['attachmentUploadDir'] = safe_unserialize($modSettings['attachmentUploadDir']);]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$modSettings['attachmentUploadDir'] = unserialize($modSettings['attachmentUploadDir']);]]></search>
+			<add><![CDATA[$modSettings['attachmentUploadDir'] = safe_unserialize($modSettings['attachmentUploadDir']);]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$modSettings['attachmentUploadDir'] = unserialize($modSettings['attachmentUploadDir']);]]></search>
+			<add><![CDATA[$modSettings['attachmentUploadDir'] = safe_unserialize($modSettings['attachmentUploadDir']);]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/ManagePaid.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.3]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA['cost' => @unserialize($row['cost']),]]></search>
+			<add><![CDATA['cost' => safe_unserialize($row['cost']),]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$pending_details = @unserialize($row['pending_details']);]]></search>
+			<add><![CDATA[$pending_details = safe_unserialize($row['pending_details']);]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$costs = @unserialize($context['current_subscription']['real_cost']);]]></search>
+			<add><![CDATA[$costs = safe_unserialize($context['current_subscription']['real_cost']);]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$costs = @unserialize($row['cost']);]]></search>
+			<add><![CDATA[$costs = safe_unserialize($row['cost']);]]></add>
+		</operation>
+	</file>
+
+	<!-- Fix for word censor injection -->
+	<file name="$sourcedir/ManagePosts.php">
+		<operation>
+			<search position="before"><![CDATA[		if (empty($censor_vulgar[$i]))
+			continue;
+]]></search>
+			<add><![CDATA[
+		if (empty($censor_proper[$i]))
+			continue;
+]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/ManageSearch.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$context['index_settings'] = unserialize($modSettings['search_custom_index_resume']);]]></search>
+			<add><![CDATA[$context['index_settings'] = safe_unserialize($modSettings['search_custom_index_resume']);]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/ManageServer.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.10]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$context['config_vars'][$config_var[1]]['value'] = !empty($context['config_vars'][$config_var[1]]['value']) ? unserialize($context['config_vars'][$config_var[1]]['value']) : array();]]></search>
+			<add><![CDATA[$context['config_vars'][$config_var[1]]['value'] = !empty($context['config_vars'][$config_var[1]]['value']) ? safe_unserialize($context['config_vars'][$config_var[1]]['value']) : array();]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Memberlist.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.8]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$memberlist_cache = @unserialize($modSettings['memberlist_cache']);]]></search>
+			<add><![CDATA[$memberlist_cache = safe_unserialize($modSettings['memberlist_cache']);]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/ModerationCenter.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.1]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$context['admin_preferences'] = !empty($options['admin_preferences']) ? unserialize($options['admin_preferences']) : array();]]></search>
+			<add><![CDATA[$context['admin_preferences'] = !empty($options['admin_preferences']) ? safe_unserialize($options['admin_preferences']) : array();]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Modlog.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.11]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$row['extra'] = @unserialize($row['extra']);]]></search>
+			<add><![CDATA[$row['extra'] = safe_unserialize($row['extra']);]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Packages.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.11]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$db_changes = empty($row['db_changes']) ? array() : unserialize($row['db_changes']);]]></search>
+			<add><![CDATA[$db_changes = empty($row['db_changes']) ? array() : safe_unserialize($row['db_changes']);]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$theme_data = unserialize(base64_decode($change));]]></search>
+			<add><![CDATA[$theme_data = safe_unserialize(base64_decode($change));]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$db_changes = empty($row['db_changes']) ? array() : unserialize($row['db_changes']);]]></search>
+			<add><![CDATA[$db_changes = empty($row['db_changes']) ? array() : safe_unserialize($row['db_changes']);]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$old_db_changes = empty($row['db_changes']) ? array() : unserialize($row['db_changes']);]]></search>
+			<add><![CDATA[$old_db_changes = empty($row['db_changes']) ? array() : safe_unserialize($row['db_changes']);]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$modSettings['attachmentUploadDir'] = unserialize($modSettings['attachmentUploadDir']);]]></search>
+			<add><![CDATA[$modSettings['attachmentUploadDir'] = safe_unserialize($modSettings['attachmentUploadDir']);]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/PersonalMessage.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.5]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA['criteria' => unserialize($row['criteria']),]]></search>
+			<add><![CDATA['criteria' => safe_unserialize($row['criteria']),]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA['actions' => unserialize($row['actions']),]]></search>
+			<add><![CDATA['actions' => safe_unserialize($row['actions']),]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Post.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.10]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$modSettings['attachmentUploadDir'] = unserialize($modSettings['attachmentUploadDir']);]]></search>
+			<add><![CDATA[$modSettings['attachmentUploadDir'] = safe_unserialize($modSettings['attachmentUploadDir']);]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$modSettings['attachmentUploadDir'] = unserialize($modSettings['attachmentUploadDir']);]]></search>
+			<add><![CDATA[$modSettings['attachmentUploadDir'] = safe_unserialize($modSettings['attachmentUploadDir']);]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Profile-Actions.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.6]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$costs = @unserialize($sub['real_cost']);]]></search>
+			<add><![CDATA[$costs = safe_unserialize($sub['real_cost']);]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$current_pending = @unserialize($context['current'][$_GET['sub_id']]['pending_details']);]]></search>
+			<add><![CDATA[$current_pending = safe_unserialize($context['current'][$_GET['sub_id']]['pending_details']);]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$current_pending = @unserialize($context['current'][$context['sub']['id']]['pending_details']);]]></search>
+			<add><![CDATA[$current_pending = safe_unserialize($context['current'][$context['sub']['id']]['pending_details']);]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Profile-Modify.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.7]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$modSettings['attachmentUploadDir'] = unserialize($modSettings['attachmentUploadDir']);]]></search>
+			<add><![CDATA[$modSettings['attachmentUploadDir'] = safe_unserialize($modSettings['attachmentUploadDir']);]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Profile-View.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.5]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$extra = @unserialize($row['extra']);]]></search>
+			<add><![CDATA[$extra = safe_unserialize($row['extra']);]]></add>
+		</operation>
+	</file>
+
+	<!-- Fix for email mask on custom profile fields -->
+	<file name="$sourcedir/Register.php">
+		<operation>
+			<search position="replace"><![CDATA[if ($row['mask'] == 'email' && (preg_match('~^[0-9A-Za-z=_+\-/][0-9A-Za-z=_\'+\-/\.]*@[\w\-]+(\.[\w\-]+)*(\.[\w]{2,6})$~', $value) === 0 || strlen($value) > 255))]]></search>
+			<add><![CDATA[if ($row['mask'] == 'email' && !empty($value) && (preg_match('~^[0-9A-Za-z=_+\-/][0-9A-Za-z=_\'+\-/\.]*@[\w\-]+(\.[\w\-]+)*(\.[\w]{2,6})$~', $value) === 0 || strlen($value) > 255))]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/RemoveTopic.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$customIndexSettings = unserialize($modSettings['search_custom_index_config']);]]></search>
+			<add><![CDATA[$customIndexSettings = safe_unserialize($modSettings['search_custom_index_config']);]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$customIndexSettings = unserialize($modSettings['search_custom_index_config']);]]></search>
+			<add><![CDATA[$customIndexSettings = safe_unserialize($modSettings['search_custom_index_config']);]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/SearchAPI-Custom.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$this->indexSettings = unserialize($modSettings['search_custom_index_config']);]]></search>
+			<add><![CDATA[$this->indexSettings = safe_unserialize($modSettings['search_custom_index_config']);]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Subs-Charset.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[if (@unserialize($row['extra']) === false && preg_match('~^(a:3:{s:5:"topic";i:\d+;s:7:"subject";s:)(\d+):"(.+)"(;s:6:"member";s:5:"\d+";})$~', $row['extra'], $matches) === 1)]]></search>
+			<add><![CDATA[if (safe_unserialize($row['extra']) === false && preg_match('~^(a:3:{s:5:"topic";i:\d+;s:7:"subject";s:)(\d+):"(.+)"(;s:6:"member";s:5:"\d+";})$~', $row['extra'], $matches) === 1)]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Subs-Graphics.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.9]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$modSettings['attachmentUploadDir'] = unserialize($modSettings['attachmentUploadDir']);]]></search>
+			<add><![CDATA[$modSettings['attachmentUploadDir'] = safe_unserialize($modSettings['attachmentUploadDir']);]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Subs-Members.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.7]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[if (empty($regOptions['email']) || preg_match('~^[0-9A-Za-z=_+\-/][0-9A-Za-z=_\'+\-/\.]*@[\w\-]+(\.[\w\-]+)*(\.[\w]{2,6})$~', $regOptions['email'])]]></search>
+			<add><![CDATA[if (empty($regOptions['email']) || preg_match('~^[0-9A-Za-z=_+\-/][0-9A-Za-z=_\'+\-/\.]*@[\w\-]+(\.[\w\-]+)*(\.[\w]{2,15})$~', $regOptions['email'])]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Subs-MembersOnline.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$spiders = unserialize($modSettings['spider_name_cache']);]]></search>
+			<add><![CDATA[$spiders = safe_unserialize($modSettings['spider_name_cache']);]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Subs-Menu.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.1]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$menu_context['sections'][$section_id]['areas'][$area_id] = unserialize(base64_decode('YTozOntzOjU6ImxhYmVsIjtzOjEyOiJPb21wYSBMb29tcGEiO3M6MzoidXJsIjtzOjQzOiJodHRwOi8vZW4ud2lraXBlZGlhLm9yZy93aWtpL09vbXBhX0xvb21wYXM/IjtzOjQ6Imljb24iO3M6ODY6IjxpbWcgc3JjPSJodHRwOi8vd3d3LnNpbXBsZW1hY2hpbmVzLm9yZy9pbWFnZXMvb29tcGEuZ2lmIiBhbHQ9IkknbSBhbiBPb21wYSBMb29tcGEiIC8+Ijt9'));]]></search>
+			<add><![CDATA[$menu_context['sections'][$section_id]['areas'][$area_id] = safe_unserialize(base64_decode('YTozOntzOjU6ImxhYmVsIjtzOjEyOiJPb21wYSBMb29tcGEiO3M6MzoidXJsIjtzOjQzOiJodHRwOi8vZW4ud2lraXBlZGlhLm9yZy93aWtpL09vbXBhX0xvb21wYXM/IjtzOjQ6Imljb24iO3M6ODY6IjxpbWcgc3JjPSJodHRwOi8vd3d3LnNpbXBsZW1hY2hpbmVzLm9yZy9pbWFnZXMvb29tcGEuZ2lmIiBhbHQ9IkknbSBhbiBPb21wYSBMb29tcGEiIC8+Ijt9'));]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Subs-Post.php">
+		<operation error="ignore">
+			<search position="replace"><![CDATA[@version 2.0.8]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+		<operation error="ignore">
+			<search position="replace"><![CDATA[@version 2.0.10]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$criteria = unserialize($row['criteria']);]]></search>
+			<add><![CDATA[$criteria = safe_unserialize($row['criteria']);]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$customIndexSettings = unserialize($modSettings['search_custom_index_config']);]]></search>
+			<add><![CDATA[$customIndexSettings = safe_unserialize($modSettings['search_custom_index_config']);]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$modSettings['attachmentUploadDir'] = unserialize($modSettings['attachmentUploadDir']);]]></search>
+			<add><![CDATA[$modSettings['attachmentUploadDir'] = safe_unserialize($modSettings['attachmentUploadDir']);]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$customIndexSettings = unserialize($modSettings['search_custom_index_config']);]]></search>
+			<add><![CDATA[$customIndexSettings = safe_unserialize($modSettings['search_custom_index_config']);]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+	$message = preg_replace_callback('~\[nobbc\](.+?)\[/nobbc\]~is', 'nobbc__preg_callback', $message);
+]]></search>
+			<add><![CDATA[
+	$message = preg_replace_callback('~\[nobbc\](.+?)\[/nobbc\]~is', 'nobbc__preg_callback', $message);
+
+	// Remove empty bbc.
+	$message = preg_replace('~\[([^\]=\s]+)[^\]]*\](?' . '>\s|(?R))*?\[/\1\]\s?~i', '', $message);
+]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Subs.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.11]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$modSettings['attachmentUploadDir'] = unserialize($modSettings['attachmentUploadDir']);]]></search>
+			<add><![CDATA[$modSettings['attachmentUploadDir'] = safe_unserialize($modSettings['attachmentUploadDir']);]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$modSettings['attachmentUploadDir'] = unserialize($modSettings['attachmentUploadDir']);]]></search>
+			<add><![CDATA[$modSettings['attachmentUploadDir'] = safe_unserialize($modSettings['attachmentUploadDir']);]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[function safe_unserialize($data)
+{
+	// There's no reason input should contain an object,
+	// user is up to no good...
+	if (preg_match('/(^|;|{|})O:([0-9]|\+|\-)+/', $data) === 0)
+		return @unserialize($data);
+}]]></search>
+			<add><![CDATA[/**
+ * Safe serialize() and unserialize() replacements
+ *
+ * @license Public Domain
+ *
+ * @author anthon (dot) pang (at) gmail (dot) com
+ */
+
+/**
+ * Safe serialize() replacement. Recursive
+ * - output a strict subset of PHP's native serialized representation
+ * - does not serialize objects
+ *
+ * @param mixed $value
+ * @return string
+ */
+function _safe_serialize($value)
+{
+	if(is_null($value))
+		return 'N;';
+
+	if(is_bool($value))
+		return 'b:'. (int) $value .';';
+
+	if(is_int($value))
+		return 'i:'. $value .';';
+
+	if(is_float($value))
+		return 'd:'. str_replace(',', '.', $value) .';';
+
+	if(is_string($value))
+		return 's:'. strlen($value) .':"'. $value .'";';
+
+	if(is_array($value))
+	{
+		$out = '';
+		foreach($value as $k => $v)
+			$out .= _safe_serialize($k) . _safe_serialize($v);
+
+		return 'a:'. count($value) .':{'. $out .'}';
+	}
+
+	// safe_serialize cannot serialize resources or objects.
+	return false;
+}
+/**
+ * Wrapper for _safe_serialize() that handles exceptions and multibyte encoding issues.
+ *
+ * @param mixed $value
+ * @return string
+ */
+function safe_serialize($value)
+{
+	// Make sure we use the byte count for strings even when strlen() is overloaded by mb_strlen()
+	if (function_exists('mb_internal_encoding') &&
+		(((int) ini_get('mbstring.func_overload')) & 2))
+	{
+		$mbIntEnc = mb_internal_encoding();
+		mb_internal_encoding('ASCII');
+	}
+
+	$out = _safe_serialize($value);
+
+	if (isset($mbIntEnc))
+		mb_internal_encoding($mbIntEnc);
+
+	return $out;
+}
+
+/**
+ * Safe unserialize() replacement
+ * - accepts a strict subset of PHP's native serialized representation
+ * - does not unserialize objects
+ *
+ * @param string $str
+ * @return mixed
+ * @throw Exception if $str is malformed or contains unsupported types (e.g., resources, objects)
+ */
+function _safe_unserialize($str)
+{
+	// Input exceeds 4096.
+	if(strlen($str) > 4096)
+		return false;
+
+	// Input  is not a string.
+	if(empty($str) || !is_string($str))
+		return false;
+
+	$stack = array();
+	$expected = array();
+
+	/*
+	 * states:
+	 *   0 - initial state, expecting a single value or array
+	 *   1 - terminal state
+	 *   2 - in array, expecting end of array or a key
+	 *   3 - in array, expecting value or another array
+	 */
+	$state = 0;
+	while($state != 1)
+	{
+		$type = isset($str[0]) ? $str[0] : '';
+		if($type == '}')
+			$str = substr($str, 1);
+
+		else if($type == 'N' && $str[1] == ';')
+		{
+			$value = null;
+			$str = substr($str, 2);
+		}
+		else if($type == 'b' && preg_match('/^b:([01]);/', $str, $matches))
+		{
+			$value = $matches[1] == '1' ? true : false;
+			$str = substr($str, 4);
+		}
+		else if($type == 'i' && preg_match('/^i:(-?[0-9]+);(.*)/s', $str, $matches))
+		{
+			$value = (int)$matches[1];
+			$str = $matches[2];
+		}
+		else if($type == 'd' && preg_match('/^d:(-?[0-9]+\.?[0-9]*(E[+-][0-9]+)?);(.*)/s', $str, $matches))
+		{
+			$value = (float)$matches[1];
+			$str = $matches[3];
+		}
+		else if($type == 's' && preg_match('/^s:([0-9]+):"(.*)/s', $str, $matches) && substr($matches[2], (int)$matches[1], 2) == '";')
+		{
+			$value = substr($matches[2], 0, (int)$matches[1]);
+			$str = substr($matches[2], (int)$matches[1] + 2);
+		}
+		else if($type == 'a' && preg_match('/^a:([0-9]+):{(.*)/s', $str, $matches) && $matches[1] < 256)
+		{
+			$expectedLength = (int)$matches[1];
+			$str = $matches[2];
+		}
+
+		// Object or unknown/malformed type.
+		else
+			return false;
+
+		switch($state)
+		{
+			case 3: // In array, expecting value or another array.
+				if($type == 'a')
+				{
+					// Array nesting exceeds 3.
+					if(count($stack) >= 3)
+						return false;
+
+					$stack[] = &$list;
+					$list[$key] = array();
+					$list = &$list[$key];
+					$expected[] = $expectedLength;
+					$state = 2;
+					break;
+				}
+				if($type != '}')
+				{
+					$list[$key] = $value;
+					$state = 2;
+					break;
+				}
+
+				// Missing array value.
+				return false;
+
+			case 2: // in array, expecting end of array or a key
+				if($type == '}')
+				{
+					// Array size is less than expected.
+					if(count($list) < end($expected))
+						return false;
+
+					unset($list);
+					$list = &$stack[count($stack)-1];
+					array_pop($stack);
+
+					// Go to terminal state if we're at the end of the root array.
+					array_pop($expected);
+
+					if(count($expected) == 0)
+						$state = 1;
+
+					break;
+				}
+
+				if($type == 'i' || $type == 's')
+				{
+					// Array size exceeds 256.
+					if(count($list) >= 256)
+						return false;
+
+					// Array size exceeds expected length.
+					if(count($list) >= end($expected))
+						return false;
+
+					$key = $value;
+					$state = 3;
+					break;
+				}
+
+				// Illegal array index type.
+				return false;
+
+			// Expecting array or value.
+			case 0:
+				if($type == 'a')
+				{
+					// Array nesting exceeds 3.
+					if(count($stack) >= 3)
+						return false;
+
+					$data = array();
+					$list = &$data;
+					$expected[] = $expectedLength;
+					$state = 2;
+					break;
+				}
+
+				if($type != '}')
+				{
+					$data = $value;
+					$state = 1;
+					break;
+				}
+
+				// Not in array.
+				return false;
+		}
+	}
+
+	// Trailing data in input.
+	if(!empty($str))
+		return false;
+
+	return $data;
+}
+
+/**
+ * Wrapper for _safe_unserialize() that handles exceptions and multibyte encoding issue
+ *
+ * @param string $str
+ * @return mixed
+ */
+function safe_unserialize($str)
+{
+	// Make sure we use the byte count for strings even when strlen() is overloaded by mb_strlen()
+	if (function_exists('mb_internal_encoding') &&
+		(((int) ini_get('mbstring.func_overload')) & 0x02))
+	{
+		$mbIntEnc = mb_internal_encoding();
+		mb_internal_encoding('ASCII');
+	}
+
+	$out = _safe_unserialize($str);
+
+	if (isset($mbIntEnc))
+		mb_internal_encoding($mbIntEnc);
+
+	return $out;
+}]]></add>
+		</operation>
+	</file>
+
+	<!-- Fix for updated PayPal Forced SSL -->
+	<file name="$sourcedir/Subscriptions-PayPal.php">
+		<operation>
+			<search position="replace"><![CDATA[if (function_exists('curl_init') && $curl = curl_init((!empty($modSettings['paidsubs_test']) ? 'https://www.sandbox.' : 'http://www.') . 'paypal.com/cgi-bin/webscr'))]]></search>
+			<add><![CDATA[		if (function_exists('curl_init') && $curl = curl_init((!empty($modSettings['paidsubs_test']) ? 'https://www.sandbox.' : 'https://www.') . 'paypal.com/cgi-bin/webscr'))]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$fp = fsockopen('www.paypal.com', 80, $errno, $errstr, 30);]]></search>
+			<add><![CDATA[$fp = fsockopen('ssl://www.paypal.com', 443, $errno, $errstr, 30);]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Themes.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.4]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$install_info += unserialize($match[1]);]]></search>
+			<add><![CDATA[$install_info += safe_unserialize($match[1]);]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$options['admin_preferences'] = !empty($options['admin_preferences']) ? unserialize($options['admin_preferences']) : array();]]></search>
+			<add><![CDATA[$options['admin_preferences'] = !empty($options['admin_preferences']) ? safe_unserialize($options['admin_preferences']) : array();]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[updateMemberData((int) $_REQUEST['u'], array('id_theme' => (int) $_GET['th']));]]></search>
+			<add><![CDATA[if (isset($_GET['th']) && $_GET['th'] == 0)
+				$_GET['th'] = $modSettings['theme_guests'];
+
+			updateMemberData((int) $_REQUEST['u'], array('id_theme' => (int) $_GET['th']));]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Who.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.2]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$actions = @unserialize($row['url']);]]></search>
+			<add><![CDATA[$actions = safe_unserialize($row['url']);]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[foreach (unserialize($modSettings['spider_name_cache']) as $id => $name)]]></search>
+			<add><![CDATA[foreach (safe_unserialize($modSettings['spider_name_cache']) as $id => $name)]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$actions = @unserialize($url[0]);]]></search>
+			<add><![CDATA[$actions = safe_unserialize($url[0]);]]></add>
+		</operation>
+	</file>
+
+	<file name="$boarddir/subscriptions.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.2]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$cost = unserialize($subscription_info['cost']);]]></search>
+			<add><![CDATA[$cost = safe_unserialize($subscription_info['cost']);]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$real_details = @unserialize($subscription_info['pending_details']);]]></search>
+			<add><![CDATA[$real_details = safe_unserialize($subscription_info['pending_details']);]]></add>
+		</operation>
+	</file>
+
+	<file name="$themedir/scripts/editor.js">
+		<operation>
+			<search position="replace"><![CDATA[			oMyStyle.styleSheet.cssText = document.styleSheets['editor_ie_css'] ? document.styleSheets['editor_ie_css'].cssText : document.styleSheets['editor_css'].cssText;
+]]></search>
+			<add><![CDATA[
+			if (oMyStyle.styleSheet)
+				oMyStyle.styleSheet.cssText = document.styleSheets['editor_ie_css'] ? document.styleSheets['editor_ie_css'].cssText : document.styleSheets['editor_css'].cssText;
+			else
+				oMyStyle.sheet.cssText = document.styleSheets['editor_ie_css'] ? document.styleSheets['editor_ie_css'].cssText : document.styleSheets['editor_css'].cssText;
+]]></add>
+		</operation>
+
+		<operation>
+			<search position="replace"><![CDATA[this.oSmileyPopupWindow = window.open('about:blank', this.opt.sUniqueId + '_addMoreSmileysPopup', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,width=480,height=220,resizable=yes');]]></search>
+			<add><![CDATA[this.oSmileyPopupWindow = window.open('', this.opt.sUniqueId + '_addMoreSmileysPopup', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,width=480,height=220,resizable=yes');]]></add>
+		</operation>
+
+		<operation>
+			<search position="replace"><![CDATA[this.bRichTextPossible = !this.opt.bRichEditOff && ((is_ie5up && !is_ie50) || is_ff || is_opera95up || is_safari || is_chrome) && !(is_iphone || is_android);]]></search>
+			<add><![CDATA[this.bRichTextPossible = !this.opt.bRichEditOff && ((is_ie5up && !is_ie50) || is_ff || is_opera95up || is_safari || is_chrome);]]></add>
+		</operation>
+	</file>
+
+	<file name="$themedir/Themes.template.php">
+		<operation error="ignore">
+			<search position="replace"><![CDATA[@version 2.0.7]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[<a href="', $scripturl, '?action=theme;sa=pick;u=', $context['current_member'], ';th=', $theme['id'], ';', $context['session_var'], '=', $context['session_id'], '">', $theme['name'], '</a>]]></search>
+			<add><![CDATA[<a href="', $scripturl, '?action=theme;sa=pick;u=', $context['current_member'], ';th=', $theme['id'], ';', $context['session_var'], '=', $context['session_id'], '">', $theme['name'], (!empty($theme['variants']) ? ';vrt=' . $theme['selected_variant'] : ''), '</a>]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[						<li>
+							<a href="', $scripturl, '?action=theme;sa=pick;u=', $context['current_member'], ';th=', $theme['id'], ';', $context['session_var'], '=', $context['session_id'], '" id="theme_use_', $theme['id'], '">[', $txt['theme_set'], ']</a>
+						</li>
+						<li>
+							<a href="', $scripturl, '?action=theme;sa=pick;u=', $context['current_member'], ';theme=', $theme['id'], ';', $context['session_var'], '=', $context['session_id'], '" id="theme_preview_', $theme['id'], '">[', $txt['theme_preview'], ']</a>
+						</li>]]></search>
+			<add><![CDATA[						<li>
+							<a href="', $scripturl, '?action=theme;sa=pick;u=', $context['current_member'], ';th=', $theme['id'], ';', $context['session_var'], '=', $context['session_id'], (!empty($theme['variants']) ? ';vrt=' . $theme['selected_variant'] : ''), '" id="theme_use_', $theme['id'], '">[', $txt['theme_set'], ']</a>
+						</li>
+						<li>
+							<a href="', $scripturl, '?action=theme;sa=pick;u=', $context['current_member'], ';theme=', $theme['id'], ';', $context['session_var'], '=', $context['session_id'],  (!empty($theme['variants']) ? ';vrt=' . $theme['selected_variant'] : ''), '" id="theme_preview_', $theme['id'], '">[', $txt['theme_preview'], ']</a>
+						</li>]]></add>
+		</operation>
+	</file>
+</modification>

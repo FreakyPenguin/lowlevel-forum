@@ -1,0 +1,171 @@
+<?xml version="1.0"?>
+<!DOCTYPE modification SYSTEM "http://www.simplemachines.org/xml/modification">
+<modification xmlns="http://www.simplemachines.org/xml/modification" xmlns:smf="http://www.simplemachines.org/">
+	<id>smf:smf-2.0.11</id>
+	<version>1.0</version>
+
+	<!-- Usual version update -->
+	<file name="$boarddir/index.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @version 2.0.10
+]]></search>
+			<add><![CDATA[
+ * @version 2.0.11
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+$forum_version = 'SMF 2.0.10';
+]]></search>
+			<add><![CDATA[
+$forum_version = 'SMF 2.0.11';
+]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Load.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.10]]></search>
+			<add><![CDATA[@version 2.0.11]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[list ($id_member, $password) = @unserialize($_COOKIE[$cookiename]);]]></search>
+			<add><![CDATA[list ($id_member, $password) = safe_unserialize($_COOKIE[$cookiename]);]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[list ($id_member, $password, $login_span) = @unserialize($_SESSION['login_' . $cookiename]);]]></search>
+			<add><![CDATA[list ($id_member, $password, $login_span) = safe_unserialize($_SESSION['login_' . $cookiename]);]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/LogInOut.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.7]]></search>
+			<add><![CDATA[@version 2.0.11]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[list (, , $timeout) = @unserialize($_COOKIE[$cookiename]);]]></search>
+			<add><![CDATA[list (, , $timeout) = safe_unserialize($_COOKIE[$cookiename]);]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[list (, , $timeout) = @unserialize($_SESSION['login_' . $cookiename]);]]></search>
+			<add><![CDATA[list (, , $timeout) = safe_unserialize($_SESSION['login_' . $cookiename]);]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/ManageMembers.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0]]></search>
+			<add><![CDATA[@version 2.0.11]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$_POST += @unserialize(base64_decode($_REQUEST['params']));]]></search>
+			<add><![CDATA[$_POST += safe_unserialize(base64_decode($_REQUEST['params']));]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Modlog.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.7]]></search>
+			<add><![CDATA[@version 2.0.11]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$search_params = @unserialize($search_params);]]></search>
+			<add><![CDATA[$search_params = safe_unserialize($search_params);]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Packages.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.10]]></search>
+			<add><![CDATA[@version 2.0.11]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$potententialTrees = unserialize(base64_decode($_GET['back_look']));]]></search>
+			<add><![CDATA[$potententialTrees = safe_unserialize(base64_decode($_GET['back_look']));]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$_POST['permStatus'] = unserialize(base64_decode($_POST['toProcess']));]]></search>
+			<add><![CDATA[$_POST['permStatus'] = safe_unserialize(base64_decode($_POST['toProcess']));]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$context['directory_list'] = isset($_POST['dirList']) ? unserialize(base64_decode($_POST['dirList'])) : array();]]></search>
+			<add><![CDATA[$context['directory_list'] = isset($_POST['dirList']) ? safe_unserialize(base64_decode($_POST['dirList'])) : array();]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$context['special_files'] = unserialize(base64_decode($_POST['specialFiles']));]]></search>
+			<add><![CDATA[$context['special_files'] = safe_unserialize(base64_decode($_POST['specialFiles']));]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Subs-Auth.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.9]]></search>
+			<add><![CDATA[@version 2.0.11]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$array = @unserialize($_COOKIE[$cookiename]);]]></search>
+			<add><![CDATA[$array = safe_unserialize($_COOKIE[$cookiename]);]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Subs-Editor.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.8]]></search>
+			<add><![CDATA[@version 2.0.11]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$context['search_param'] = isset($_REQUEST['search_param']) ? unserialize(base64_decode($_REQUEST['search_param'])) : array();]]></search>
+			<add><![CDATA[$context['search_param'] = isset($_REQUEST['search_param']) ? safe_unserialize(base64_decode($_REQUEST['search_param'])) : array();]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Subs-OpenID.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0]]></search>
+			<add><![CDATA[@version 2.0.11]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$context['openid_save_fields'] = isset($_GET['sf']) ? unserialize(base64_decode($_GET['sf'])) : array();]]></search>
+			<add><![CDATA[$context['openid_save_fields'] = isset($_GET['sf']) ? safe_unserialize(base64_decode($_GET['sf'])) : array();]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Subs.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.8]]></search>
+			<add><![CDATA[@version 2.0.11]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[	void remove_integration_function(string hook, string function)
+		- removes the given function from the given hook.
+		- does nothing if the functions is not available.]]></search>
+			<add><![CDATA[	void remove_integration_function(string hook, string function)
+		- removes the given function from the given hook.
+		- does nothing if the functions is not available.
+
+	array safe_unserialize(string data)
+		- sanitizes input before unserializing string.]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[function return_chr__preg_callback($matches)
+{
+	return chr($matches[1]);
+}]]></search>
+			<add><![CDATA[function return_chr__preg_callback($matches)
+{
+	return chr($matches[1]);
+}
+
+function safe_unserialize($data)
+{
+	// There's no reason input should contain an object,
+	// user is up to no good...
+	if (preg_match('/(^|;|{|})O:([0-9]|\+|\-)+/', $data) === 0)
+		return @unserialize($data);
+}]]></add>
+		</operation>
+	</file>
+
+</modification>

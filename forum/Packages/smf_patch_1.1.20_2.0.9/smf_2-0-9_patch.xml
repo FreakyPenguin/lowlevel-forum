@@ -1,0 +1,436 @@
+<?xml version="1.0"?>
+<!DOCTYPE modification SYSTEM "http://www.simplemachines.org/xml/modification">
+<modification xmlns="http://www.simplemachines.org/xml/modification" xmlns:smf="http://www.simplemachines.org/">
+	<id>smf:smf-2.0.9</id>
+	<version>1.0</version>
+
+	<!--
+	This addresses a few bugs and minor security issues with 2.0.8 and earlier
+	-->
+
+	<file name="$boarddir/index.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.8
+]]></search>
+			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.9
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+$forum_version = 'SMF 2.0.8';
+]]></search>
+			<add><![CDATA[
+$forum_version = 'SMF 2.0.9';
+]]></add>
+		</operation>
+	</file>
+	<file name="$sourcedir/PackageGet.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @version 2.0
+]]></search>
+			<add><![CDATA[
+ * @version 2.0.9
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+				$package['href'] = $url . '/' . $package['filename'];
+				$package['name'] = $smcFunc['htmlspecialchars']($package['name']);
+]]></search>
+			<add><![CDATA[
+				$package['href'] = $url . '/' . $package['filename'];
+]]></add>
+		</operation>
+	</file>
+	<file name="$sourcedir/Subs-Package.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @version 2.0.1
+]]></search>
+			<add><![CDATA[
+ * @version 2.0.9
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+		$installed[] = array(
+]]></search>
+			<add><![CDATA[
+		// Clean things up first...
+		$row = htmlspecialchars__recursive($row);
+
+		$installed[] = array(
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+	$package = $packageInfo->to_array();
+	$package['xml'] = $packageInfo;
+	$package['filename'] = $gzfilename;
+]]></search>
+			<add><![CDATA[
+	$package = $packageInfo->to_array();
+	$package = htmlspecialchars__recursive($package);
+	$package['xml'] = $packageInfo;	
+	$package['filename'] = $gzfilename;
+
+	// Don't want to mess with code...
+	$types = array('install', 'uninstall', 'upgrade');
+	foreach($types as $type)
+	{
+		if (isset($package[$type]['code']))
+		{
+			$package[$type]['code'] = un_htmlspecialchars($package[$type]['code']);
+		}
+	}
+]]></add>
+		</operation>
+	</file>
+	<file name="$sourcedir/Packages.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @version 2.0.2
+]]></search>
+			<add><![CDATA[
+ * @version 2.0.9
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+				preparsecode($context['package_readme']);
+				$context['package_readme'] = parse_bbc($context['package_readme']);
+]]></search>
+			<add><![CDATA[
+				$context['package_readme'] = preg_replace('~\[[/]?html\]~i', '', $context['package_readme']);
+				preparsecode($context['package_readme']);
+				$context['package_readme'] = parse_bbc($context['package_readme']);
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+			$failed_step_insert = serialize($failed_steps);
+]]></search>
+			<add><![CDATA[
+			$failed_step_insert = serialize($failed_steps);
+
+			// Un-sanitize things before we insert them...
+			$keys = array('filename', 'name', 'id', 'version');
+			foreach ($keys as $key)
+			{
+				// Yay for variable variables...
+				${"package_$key"} = un_htmlspecialchars($packageInfo[$key]);
+			}
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+					$packageInfo['filename'], $packageInfo['name'], $packageInfo['id'], $packageInfo['version'],
+]]></search>
+			<add><![CDATA[
+					$package_filename, $package_name, $package_id, $package_version,
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+	logAction($context['uninstalling'] ? 'uninstall_package' : (!empty($is_upgrade) ? 'upgrade_package' : 'install_package'), array('package' => $smcFunc['htmlspecialchars']($packageInfo['name']), 'version' => $smcFunc['htmlspecialchars']($packageInfo['version'])), 'admin');
+]]></search>
+			<add><![CDATA[
+	logAction($context['uninstalling'] ? 'uninstall_package' : (!empty($is_upgrade) ? 'upgrade_package' : 'install_package'), array('package' => $packageInfo['name'], 'version' => $packageInfo['version']), 'admin');
+]]></add>
+		</operation>
+	</file>
+	<file name="$sourcedir/Load.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @version 2.0.7
+]]></search>
+			<add><![CDATA[
+ * @version 2.0.9
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+		$cache_hits[$cache_count]['t'] = array_sum(explode(' ', microtime())) - array_sum(explode(' ', $st));
+}
+]]></search>
+			<add><![CDATA[
+		$cache_hits[$cache_count]['t'] = array_sum(explode(' ', microtime())) - array_sum(explode(' ', $st));
+
+	// Invalidate the opcode cache
+	if (function_exists('opcache_invalidate'))
+   		opcache_invalidate($cachedir . '/data_' . $key . '.php', true);
+
+	if (function_exists('apc_delete_file'))
+   		@apc_delete_file($cachedir . '/data_' . $key . '.php');
+}
+]]></add>
+		</operation>
+	</file>
+	<file name="$sourcedir/ManageServer.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @version 2.0.5
+]]></search>
+			<add><![CDATA[
+ * @version 2.0.9
+]]></add>
+		</operation>
+		<operation>
+			<search position="before"><![CDATA[
+					$context['config_vars'][$config_var[1]]['value'] = unserialize($context['config_vars'][$config_var[1]]['value']);
+]]></search>
+			<add><![CDATA[
+					$context['config_vars'][$config_var[1]]['value'] = !empty($context['config_vars'][$config_var[1]]['value']) ? unserialize($context['config_vars'][$config_var[1]]['value']) : array();
+]]></add>
+		</operation>
+	</file>
+	<file name="$sourcedir/Subs-Auth.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @version 2.0.7
+]]></search>
+			<add><![CDATA[
+ * @version 2.0.9
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+	global $txt, $mtitle, $mmessage, $context;
+]]></search>
+			<add><![CDATA[
+	global $txt, $mtitle, $mmessage, $context, $smcFunc;
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+	$context['title'] = &$mtitle;
+]]></search>
+			<add><![CDATA[
+	$context['title'] = $smcFunc['htmlspecialchars']($mtitle);
+]]></add>
+		</operation>
+	</file>
+	<file name="$sourcedir/Subs-Db-mysql.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @version 2.0.8
+]]></search>
+			<add><![CDATA[
+ * @version 2.0.9
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+	if (strpos($db_string, 'GROUP BY') !== false && strpos($db_string, 'ORDER BY') === false && strpos($db_string, 'INSERT INTO') === false)
+]]></search>
+			<add><![CDATA[
+	if (strpos($db_string, 'GROUP BY') !== false && strpos($db_string, 'ORDER BY') === false && preg_match('~^\s+SELECT~i', $db_string))
+]]></add>
+		</operation>
+	</file>
+	<file name="$sourcedir/Display.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @version 2.0.7
+]]></search>
+			<add><![CDATA[
+ * @version 2.0.9
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+		$context['show_view_results_button'] = $context['allow_vote'] && (!$context['allow_poll_view'] || !$context['poll']['show_results'] || !$context['poll']['has_voted']);
+]]></search>
+			<add><![CDATA[
+		$context['show_view_results_button'] = $context['allow_vote'] && $context['allow_poll_view'] && !$context['poll']['show_results'];
+]]></add>
+		</operation>
+	</file>
+	<file name="$sourcedir/QueryString.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @version 2.0.8
+]]></search>
+			<add><![CDATA[
+ * @version 2.0.9
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+	// Make sure we have a valid REMOTE_ADDR.
+]]></search>
+			<add><![CDATA[
+	// Some mail providers like to encode semicolons in activation URLs...
+	if (!empty($_REQUEST['action']) && substr($_SERVER['QUERY_STRING'], 0, 18) == 'action=activate%3b')
+	{
+		header('Location: ' . $scripturl . '?' . str_replace('%3b', ';', $_SERVER['QUERY_STRING']));
+		exit;
+	}
+
+	// Make sure we have a valid REMOTE_ADDR.
+]]></add>
+		</operation>
+	</file>
+	<file name="$sourcedir/Search.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @version 2.0.8
+]]></search>
+			<add><![CDATA[
+ * @version 2.0.9
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+					$match = strtr(htmlspecialchars($match, ENT_QUOTES), array("\n" => '&nbsp;'));
+]]></search>
+			<add><![CDATA[
+					$match = strtr($smcFunc['htmlspecialchars']($match, ENT_QUOTES), array("\n" => '&nbsp;'));
+]]></add>
+		</operation>
+	</file>
+	<file name="$sourcedir/ScheduledTasks.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @version 2.0.7
+]]></search>
+			<add><![CDATA[
+ * @version 2.0.9
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+					AND closed = {int:not_closed}
+]]></search>
+			<add><![CDATA[
+					AND closed = {int:closed}
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+					'not_closed' => 0,
+]]></search>
+			<add><![CDATA[
+					'closed' => 1,
+]]></add>
+		</operation>
+	</file>
+	<file name="$sourcedir/Post.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @version 2.0.8
+]]></search>
+			<add><![CDATA[
+ * @version 2.0.9
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+	if (isset($_REQUEST['preview']))
+		return Post();
+]]></search>
+			<add><![CDATA[
+	if (isset($_REQUEST['preview']))
+	{
+		checkSession();
+		return Post();
+	}
+]]></add>
+		</operation>
+	</file>
+	<file name="$sourcedir/Subs-Graphics.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @version 2.0
+]]></search>
+			<add><![CDATA[
+ * @version 2.0.9
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+			// Check for potential infection
+			if (preg_match('~(iframe|html|eval|body|script\W|[CF]WS[\x01-\x0C])~i', $prev_chunk . $cur_chunk) === 1)
+]]></search>
+			<add><![CDATA[
+			// Check for potential infection
+			if (preg_match('~(iframe|(?<!cellTextIs)html|eval|body|script\W|[CF]WS[\x01-\x0C])~i', $prev_chunk . $cur_chunk) === 1)
+]]></add>
+		</operation>
+	</file>
+	<file name="$themedir/ManagePermissions.template.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @version 2.0
+]]></search>
+			<add><![CDATA[
+ * @version 2.0.9
+]]></add>
+		</operation>
+		<operation error="ignore">
+			<search position="replace"><![CDATA[
+	// If this is general permissions also show the default profile.
+	if ($context['permission_type'] == 'membergroup')
+	{
+		echo '
+			</div>
+]]></search>
+			<add><![CDATA[
+	echo '
+		</div>';
+
+	// If this is general permissions also show the default profile.
+	if ($context['permission_type'] == 'membergroup')
+	{
+		echo '
+]]></add>
+		</operation>
+	</file>
+	<file name="$sourcedir/Memberlist.php">
+		<operation error="ignore"><!-- This typo never got fixed in 2.0.8 install/upgrade packages -->
+			<search position="replace"><![CDATA[
+			$serach_fields[] = 'email';
+]]></search>
+			<add><![CDATA[
+			$search_fields[] = 'email';
+]]></add>
+		</operation>
+	</file>
+	<file name="$sourcedir/Subs-Post.php">
+		<operation error="ignore"><!-- This is only broken on some 2.0.8 installs... -->
+			<search position="replace"><![CDATA[
+						$htmlfunc = create_function('$m', 'return \'[html]\' . strtr(un_htmlspecialchars("$m[1]"), array("\n" => \'&#13;\', \' \' => \' &#32;\', \'[\' => \'&#91;\', \']\' => \'&#93;\')) . \'[/html]\';');
+]]></search>
+			<add><![CDATA[
+						$htmlfunc = create_function('$m', 'return \'[html]\' . strtr(un_htmlspecialchars("$m[1]"), array("\n" => \'&#13;\', \'  \' => \' &#32;\', \'[\' => \'&#91;\', \']\' => \'&#93;\')) . \'[/html]\';');
+]]></add>
+		</operation>
+		<operation><!-- PHP changed the default encoding for htmlspecialchars() in 5.4... -->
+			<search position="replace"><![CDATA[
+	$message = trim(un_htmlspecialchars(strip_tags(strtr(parse_bbc(htmlspecialchars($message), false), array('<br />' => "\n", '</div>' => "\n", '</li>' => "\n", '&#91;' => '[', '&#93;' => ']')))));
+]]></search>
+			<add><![CDATA[
+	$message = trim(un_htmlspecialchars(strip_tags(strtr(parse_bbc($smcFunc['htmlspecialchars']($message), false), array('<br />' => "\n", '</div>' => "\n", '</li>' => "\n", '&#91;' => '[', '&#93;' => ']')))));
+]]></add>
+		</operation>
+	</file>
+	<file name="$boarddir/SSI.php">
+		<operation error="ignore"><!-- SSI.php version is incorrect in some cases -->
+			<search position="replace"><![CDATA[
+ * @version 2.0.4
+]]></search>
+			<add><![CDATA[
+ * @version 2.0.7
+]]></add>
+		</operation>
+	</file>
+</modification>

@@ -1,0 +1,179 @@
+<?xml version="1.0"?>
+<!DOCTYPE modification SYSTEM "http://www.simplemachines.org/xml/modification">
+<modification xmlns="http://www.simplemachines.org/xml/modification" xmlns:smf="http://www.simplemachines.org/">
+	<id>smf:smf-2.0.13</id>
+	<version>1.0</version>
+
+	<!-- Usual version update -->
+	<file name="$boarddir/index.php">
+		<operation>
+			<search position="replace"><![CDATA[* @version 2.0.12]]></search>
+			<add><![CDATA[* @version 2.0.13]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$forum_version = 'SMF 2.0.12';]]></search>
+			<add><![CDATA[$forum_version = 'SMF 2.0.13';]]></add>
+		</operation>
+	</file>
+
+	<!-- Calendar wasn't updated on last patch, do so now. -->
+	<file name="$sourcedir/Calendar.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.11]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+	</file>
+
+	<!-- ManagePosts wasn't updated on last patch, do so now. -->
+	<file name="$sourcedir/ManagePosts.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+	</file>
+
+	<!-- Display wasn't updated on last patch, do so now. -->
+	<file name="$sourcedir/Display.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.11]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+	</file>
+
+	<!-- Subscriptions-PayPal wasn't updated on last patch, do so now. -->
+	<file name="$sourcedir/Subscriptions-PayPal.php">
+		<operation error="ignore">
+			<search position="replace"><![CDATA[@version 2.0.10]]></search>
+			<add><![CDATA[@version 2.0.12]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Themes.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.12]]></search>
+			<add><![CDATA[@version 2.0.13]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$context[$context['admin_menu_name']]['current_subsection'] = 'edit';]]></search>
+			<add><![CDATA[checkSession();
+
+	$context[$context['admin_menu_name']]['current_subsection'] = 'edit';]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/LogInOut.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.12]]></search>
+			<add><![CDATA[@version 2.0.13]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[global $txt, $context, $scripturl;]]></search>
+			<add><![CDATA[global $txt, $context, $scripturl, $smcFunc;]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$context['default_username'] = &$_REQUEST['u'];]]></search>
+			<add><![CDATA[$context['default_username'] = isset($_REQUEST['u']) ? preg_replace('~&amp;#(\\d{1,7}|x[0-9a-fA-F]{1,6});~', '&#\\1;', $smcFunc['htmlspecialchars']($_REQUEST['u'])) : '';]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Reminder.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.4]]></search>
+			<add><![CDATA[@version 2.0.13]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[// Coming with a known ID?]]></search>
+			<add><![CDATA[$_POST['user'] = isset($_POST['user']) ? $smcFunc['htmlspecialchars']($_POST['user']) : '';
+	$_REQUEST['uid'] = (int) isset($_REQUEST['uid']) ? $_REQUEST['uid'] : 0;
+
+	// Coming with a known ID?]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/PackageGet.php">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.9]]></search>
+			<add><![CDATA[@version 2.0.13]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$authorhompage = $thisPackage->fetch('website');]]></search>
+			<add><![CDATA[$authorhompage = $smcFunc['htmlspecialchars']($thisPackage->fetch('website'));]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[// Setup the correct template, even though I'll admit we ain't downloading ;)]]></search>
+			<add><![CDATA[checkSession();
+
+	// Setup the correct template, even though I'll admit we ain't downloading ;)]]></add>
+		</operation>
+	</file>
+
+	<!-- Still bugs in here, no security risk so rolling back until better solution -->
+	<file name="$sourcedir/Subs-Post.php">
+		<operation error="ignore">
+			<search position="replace"><![CDATA[@version 2.0.12]]></search>
+			<add><![CDATA[@version 2.0.13]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+	$message = preg_replace_callback('~\[nobbc\](.+?)\[/nobbc\]~is', 'nobbc__preg_callback', $message);
+
+	// Remove empty bbc.
+	$message = preg_replace('~\[([^\]=\s]+)[^\]]*\](?' . '>\s|(?R))*?\[/\1\]\s?~i', '', $message);
+]]></search>
+			<add><![CDATA[
+	$message = preg_replace_callback('~\[nobbc\](.+?)\[/nobbc\]~is', 'nobbc__preg_callback', $message);
+]]></add>
+		</operation>
+	</file>
+
+	<!-- Remove hardcoded limits from _safe_unserialize. -->
+	<file name="$sourcedir/Subs.php" error="skip">
+		<operation>
+			<search position="replace"><![CDATA[@version 2.0.12]]></search>
+			<add><![CDATA[@version 2.0.13]]></add>
+		</operation>
+		<operation error="ignore">
+			<search position="replace"><![CDATA[// Input exceeds 4096.
+	if(strlen($str) > 4096)
+		return false;
+
+	// Input  is not a string.]]></search>
+			<add><![CDATA[	// Input  is not a string.]]></add>
+		</operation>
+		<operation error="ignore">
+			<search position="replace"><![CDATA[case 3: // In array, expecting value or another array.
+				if($type == 'a')
+				{
+					// Array nesting exceeds 3.
+					if(count($stack) >= 3)
+						return false;]]></search>
+			<add><![CDATA[case 3: // In array, expecting value or another array.
+				if($type == 'a')
+				{]]></add>
+		</operation>
+		<operation error="ignore">
+			<search position="replace"><![CDATA[case 0:
+				if($type == 'a')
+				{
+					// Array nesting exceeds 3.
+					if(count($stack) >= 3)
+						return false;]]></search>
+			<add><![CDATA[case 0:
+				if($type == 'a')
+				{]]></add>
+		</operation>
+
+		<operation error="ignore">
+			<search position="replace"><![CDATA[if($type == 'i' || $type == 's')
+				{
+					// Array size exceeds 256.
+					if(count($list) >= 256)
+						return false;
+
+					// Array size exceeds expected length.]]></search>
+			<add><![CDATA[if($type == 'i' || $type == 's')
+				{
+					// Array size exceeds expected length.]]></add>
+		</operation>
+	</file>
+</modification>

@@ -1,0 +1,1152 @@
+<?xml version="1.0"?>
+<!DOCTYPE modification SYSTEM "http://www.simplemachines.org/xml/modification">
+<modification xmlns="http://www.simplemachines.org/xml/modification" xmlns:smf="http://www.simplemachines.org/">
+	<id>smf:smf-2.0.7</id>
+	<version>1.0</version>
+
+	<file name="$boarddir/index.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.6
+]]></search>
+ 			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.7
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+$forum_version = 'SMF 2.0.6';
+]]></search>
+			<add><![CDATA[
+$forum_version = 'SMF 2.0.7';
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[header('X-XSS-Protection: 1; mode=block');]]></search>
+			<add><![CDATA[header('X-XSS-Protection: 1');]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Profile-Modify.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.6
+]]></search>
+ 			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.7
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[elseif (substr($row['mask'], 0, 5) == 'regex' && preg_match(substr($row['mask'], 5), $value) === 0)]]></search>
+			<add><![CDATA[elseif (substr($row['mask'], 0, 5) == 'regex' && trim($value) != '' && preg_match(substr($row['mask'], 5), $value) === 0)]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Register.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.6
+]]></search>
+ 			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.7
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[elseif (substr($row['mask'], 0, 5) == 'regex' && preg_match(substr($row['mask'], 5), $value) === 0)]]></search>
+			<add><![CDATA[elseif (substr($row['mask'], 0, 5) == 'regex' && trim($value) != '' && preg_match(substr($row['mask'], 5), $value) === 0)]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/DbSearch-postgresql.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0
+]]></search>
+			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.7
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA['~TYPE=HEAP~i' => '',]]></search>
+			<add><![CDATA['~ENGINE=MEMORY~i' => '',]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/DbSearch-sqlite.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0
+]]></search>
+			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.7
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA['~TYPE=HEAP~i' => '',]]></search>
+			<add><![CDATA['~ENGINE=MEMORY~i' => '',]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Search.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0
+]]></search>
+			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.7
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[CREATE TEMPORARY TABLE {db_prefix}tmp_log_search_topics (
+							id_topic mediumint(8) unsigned NOT NULL default {string:string_zero},
+							PRIMARY KEY (id_topic)
+						) TYPE=HEAP]]></search>
+			<add><![CDATA[CREATE TEMPORARY TABLE {db_prefix}tmp_log_search_topics (
+							id_topic mediumint(8) unsigned NOT NULL default {string:string_zero},
+							PRIMARY KEY (id_topic)
+						) ENGINE=MEMORY]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[CREATE TEMPORARY TABLE {db_prefix}tmp_log_search_messages (
+							id_msg int(10) unsigned NOT NULL default {string:string_zero},
+							PRIMARY KEY (id_msg)
+						) TYPE=HEAP]]></search>
+			<add><![CDATA[CREATE TEMPORARY TABLE {db_prefix}tmp_log_search_messages (
+							id_msg int(10) unsigned NOT NULL default {string:string_zero},
+							PRIMARY KEY (id_msg)
+						) ENGINE=MEMORY]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[					$keyword = preg_replace('~&amp;#(\d{1,7}|x[0-9a-fA-F]{1,6});~e', '$GLOBALS[\'smcFunc\'][\'entity_fix\'](\'\\1\')', strtr($keyword, array('\\\'' => '\'', '&' => '&amp;')));
+]]></search>
+			<add><![CDATA[					$keyword = preg_replace_callback('~(&amp;#(\d{1,7}|x[0-9a-fA-F]{1,6});)~', 'entity_fix__callback', strtr($keyword, array('\\\'' => '\'', '&' => '&amp;')));
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[			$message['body'] = preg_replace('~&amp;#(\d{1,7}|x[0-9a-fA-F]{1,6});~e', '$GLOBALS[\'smcFunc\'][\'entity_fix\'](\'\\1\')', $message['body']);
+]]></search>
+			<add><![CDATA[			$message['body'] = preg_replace_callback('~(&amp;#(\d{1,7}|x[0-9a-fA-F]{1,6});)~', 'entity_fix__callback', $message['body']);
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[		// Fix the international characters in the keyword too.
+		$query = strtr($smcFunc['htmlspecialchars']($query), array('\\\'' => '\''));
+
+		$body_highlighted = preg_replace('/((<[^>]*)|' . preg_quote(strtr($query, array('\'' => '&#039;')), '/') . ')/ie' . ($context['utf8'] ? 'u' : ''), "'\$2' == '\$1' ? stripslashes('\$1') : '<strong class=\"highlight\">\$1</strong>'", $body_highlighted);
+]]></search>
+			<add><![CDATA[		// Fix the international characters in the keyword too.
+		$query = strtr($smcFunc['htmlspecialchars']($query), array('\\\'' => '\''));
+
+		$body_highlighted = preg_replace_callback('/((<[^>]*)|' . preg_quote(strtr($query, array('\'' => '&#039;')), '/') . ')/i' . ($context['utf8'] ? 'u' : ''), create_function('$m', 'return isset($m[2]) && "$m[2]" == "$m[1]" ? stripslashes("$m[1]") : "<strong class=\"highlight\">$m[1]</strong>";'), $body_highlighted);
+]]></add>
+		</operation>
+	</file>
+
+	<file name="$themedir/Themes.template.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0
+]]></search>
+ 			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.7
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[var sBaseUseUrl = smf_prepareScriptUrl(smf_scripturl) + \'action=theme;sa=pick;u=', $context['current_member'], ';th=', $theme['id'], ';', $context['session_var'], '=', $context['session_id'], '\';
+			var sBasePreviewUrl = smf_prepareScriptUrl(smf_scripturl) + \'action=theme;sa=pick;u=', $context['current_member'], ';theme=', $theme['id'], ';', $context['session_var'], '=', $context['session_id'], '\';]]></search>
+			<add><![CDATA[var sBaseUseUrl', $theme['id'], ' = smf_prepareScriptUrl(smf_scripturl) + \'action=theme;sa=pick;u=', $context['current_member'], ';th=', $theme['id'], ';', $context['session_var'], '=', $context['session_id'], '\';
+			var sBasePreviewUrl', $theme['id'], ' = smf_prepareScriptUrl(smf_scripturl) + \'action=theme;sa=pick;u=', $context['current_member'], ';theme=', $theme['id'], ';', $context['session_var'], '=', $context['session_id'], '\';]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[document.getElementById(\'theme_use_', $theme['id'], '\').href = sBaseUseUrl + \';vrt=\' + sVariant;
+				document.getElementById(\'theme_thumb_preview_', $theme['id'], '\').href = sBasePreviewUrl + \';vrt=\' + sVariant + \';variant=\' + sVariant;
+				document.getElementById(\'theme_preview_', $theme['id'], '\').href = sBasePreviewUrl + \';vrt=\' + sVariant + \';variant=\' + sVariant;]]></search>
+			<add><![CDATA[document.getElementById(\'theme_use_', $theme['id'], '\').href = sBaseUseUrl', $theme['id'], ' + \';vrt=\' + sVariant;
+				document.getElementById(\'theme_thumb_preview_', $theme['id'], '\').href = sBasePreviewUrl', $theme['id'], ' + \';vrt=\' + sVariant + \';variant=\' + sVariant;
+				document.getElementById(\'theme_preview_', $theme['id'], '\').href = sBasePreviewUrl', $theme['id'], ' + \';vrt=\' + sVariant + \';variant=\' + sVariant;]]></add>
+		</operation>
+	</file>
+
+	<file name="$boarddir/SSI.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.4
+]]></search>
+ 			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.7
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[		WHERE ' . ($board === null ? '' : 'id_board = {int:current_board}
+			AND ') . 'FIND_IN_SET(-1, member_groups)
+		LIMIT 1]]></search>
+			<add><![CDATA[		WHERE ' . ($board === null ? '' : 'id_board = {int:current_board}
+			AND ') . 'FIND_IN_SET(-1, member_groups) != 0
+		LIMIT 1]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[		OR id_post_group = {int:id_group}
+		OR FIND_IN_SET({int:id_group}, additional_groups)';]]></search>
+			<add><![CDATA[		OR id_post_group = {int:id_group}
+		OR FIND_IN_SET({int:id_group}, additional_groups) != 0';]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[return ssi_queryPosts($query_where, $query_where_params, '', 'm.id_msg DESC', $output_method);]]></search>
+			<add><![CDATA[return ssi_queryPosts($query_where, $query_where_params, '', 'm.id_msg DESC', $output_method, false, $override_permissions);]]></add>
+		</operation>
+	</file>
+
+	<!-- This one doesn't have a version number! -->
+	<file name="$themedir/scripts/editor.js">
+		<operation>
+			<search position="replace"><![CDATA[function smc_BBCButtonBox(oOptions)
+{
+	this.opt = oOptions;
+	this.init();
+}]]></search>
+			<add><![CDATA[function smc_BBCButtonBox(oOptions)
+{
+	this.opt = oOptions;
+	this.init();
+
+	var items = ['sActiveButtonBackgroundImageHover', 'sActiveButtonBackgroundImage', 'sButtonBackgroundImageHover', 'sButtonBackgroundImage'];
+	for (var i = 0; i < items.length; i++)
+	{
+		if (items[i] in this.opt)
+			this.opt[items[i]] = this.opt[items[i]].replace(' ', '%20');
+	}
+}]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/ScheduledTasks.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0
+]]></search>
+ 			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.7
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[SELECT /*!40001 SQL_NO_CACHE */ id_mail, recipient, body, subject, headers, send_html]]></search>
+			<add><![CDATA[SELECT /*!40001 SQL_NO_CACHE */ id_mail, recipient, body, subject, headers, send_html, time_sent, private]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA['headers' => $row['headers'],
+			'send_html' => $row['send_html'],]]></search>
+			<add><![CDATA['headers' => $row['headers'],
+			'send_html' => $row['send_html'],
+			'time_sent' => $row['time_sent'],
+			'private' => $row['private'],]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$failed_emails[] = array($email['to'], $email['body'], $email['subject'], $email['headers'], $email['send_html']);]]></search>
+			<add><![CDATA[$failed_emails[] = array($email['to'], $email['body'], $email['subject'], $email['headers'], $email['send_html'], $email['time_sent'], $email['private']);]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[array('recipient' => 'string', 'body' => 'string', 'subject' => 'string', 'headers' => 'string', 'send_html' => 'string'),]]></search>
+			<add><![CDATA[array('recipient' => 'string', 'body' => 'string', 'subject' => 'string', 'headers' => 'string', 'send_html' => 'string', 'time_sent' => 'string', 'private' => 'int'),]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[SET value = {string:mail_next_send}
+				WHERE variable = {string:next_mail_send}]]></search>
+			<add><![CDATA[SET value = {string:next_mail_send}
+				WHERE variable = {string:mail_next_send}]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$result = $smcFunc['db_query']('', '
+				SELECT id_report
+				FROM {db_prefix}log_reported
+				WHERE time_started < {int:time_started}',
+				array(
+					'time_started' => $t,
+				)
+			);]]></search>
+			<add><![CDATA[$result = $smcFunc['db_query']('', '
+				SELECT id_report
+				FROM {db_prefix}log_reported
+				WHERE time_started < {int:time_started}
+					AND closed = {int:not_closed}
+					AND ignore_all = {int:not_ignored}',
+				array(
+					'time_started' => $t,
+					'not_closed' => 0,
+					'not_ignored' => 0,
+				)
+			);]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Load.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.3
+]]></search>
+ 			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.7
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[require($cachedir . '/data_' . $key . '.php');]]></search>
+			<add><![CDATA[@include($cachedir . '/data_' . $key . '.php');]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[			$fh = @fopen($cachedir . '/data_' . $key . '.php', 'w');
+			if ($fh)
+			{
+				// Write the file.
+				set_file_buffer($fh, 0);
+				flock($fh, LOCK_EX);
+				$cache_bytes = fwrite($fh, $cache_data);
+				flock($fh, LOCK_UN);
+				fclose($fh);
+
+				// Check that the cache write was successful; all the data should be written
+				// If it fails due to low diskspace, remove the cache file
+				if ($cache_bytes != strlen($cache_data))
+					@unlink($cachedir . '/data_' . $key . '.php');
+			}]]></search>
+			<add><![CDATA[				// Write the file.
+				if (function_exists('file_put_contents'))
+				{
+					$cache_bytes = @file_put_contents($cachedir . '/data_' . $key . '.php', $cache_data, LOCK_EX);
+					if ($cache_bytes != strlen($cache_data))
+						@unlink($cachedir . '/data_' . $key . '.php');
+				}
+				else
+				{
+					$fh = @fopen($cachedir . '/data_' . $key . '.php', 'w');
+					if ($fh)
+					{
+						// Write the file.
+						set_file_buffer($fh, 0);
+						flock($fh, LOCK_EX);
+						$cache_bytes = fwrite($fh, $cache_data);
+						flock($fh, LOCK_UN);
+						fclose($fh);
+
+						// Check that the cache write was successful; all the data should be written
+						// If it fails due to low diskspace, remove the cache file
+						if ($cache_bytes != strlen($cache_data))
+							@unlink($cachedir . '/data_' . $key . '.php');
+					}
+				}]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[	// Set a list of common functions.
+	$ent_list = empty($modSettings['disableEntityCheck']) ? '&(#\d{1,7}|quot|amp|lt|gt|nbsp);' : '&(#021|quot|amp|lt|gt|nbsp);';
+	$ent_check = empty($modSettings['disableEntityCheck']) ? array('preg_replace(\'~(&#(\d{1,7}|x[0-9a-fA-F]{1,6});)~e\', \'$smcFunc[\\\'entity_fix\\\'](\\\'\\2\\\')\', ', ')') : array('', '');
+]]></search>
+			<add><![CDATA[	// Set a list of common functions.
+	$ent_list = empty($modSettings['disableEntityCheck']) ? '&(#\d{1,7}|quot|amp|lt|gt|nbsp);' : '&(#021|quot|amp|lt|gt|nbsp);';
+	$ent_check = empty($modSettings['disableEntityCheck']) ? array('preg_replace_callback(\'~(&#(\d{1,7}|x[0-9a-fA-F]{1,6});)~\', \'entity_fix__callback\', ', ')') : array('', '');
+]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Subs-Post.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0
+]]></search>
+ 			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.7
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[		// Have a go at getting the right mime type.
+		if (empty($attachmentOptions['mime_type']) && $attachmentOptions['width'])
+		{
+			if (!empty($size['mime']))
+				$attachmentOptions['mime_type'] = $size['mime'];
+			elseif (isset($validImageTypes[$size[2]]))
+				$attachmentOptions['mime_type'] = 'image/' . $validImageTypes[$size[2]];
+		}
+
+		if (!empty($attachmentOptions['width']) && !empty($attachmentOptions['height']))]]></search>
+			<add><![CDATA[		// Have a go at getting the right mime type.
+		if (empty($attachmentOptions['mime_type']) && $attachmentOptions['width'])
+		{
+			if (!empty($size['mime']))
+				$attachmentOptions['mime_type'] = $size['mime'];
+			elseif (isset($validImageTypes[$size[2]]))
+				$attachmentOptions['mime_type'] = 'image/' . $validImageTypes[$size[2]];
+		}
+
+		// It is possible we might have a MIME type that isn't actually an image but still have a size.
+		// For example, Shockwave files will be able to return size but be 'application/shockwave' or similar.
+		if (!empty($attachmentOptions['mime_type']) && strpos($attachmentOptions['mime_type'], 'image/') !== 0)
+		{
+			$attachmentOptions['width'] = 0;
+			$attachmentOptions['height'] = 0;
+		}
+
+		if (!empty($attachmentOptions['width']) && !empty($attachmentOptions['height']))]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[	// Get the hash if no hash has been given yet.]]></search>
+			<add><![CDATA[	// It is possible we might have a MIME type that isn't actually an image but still have a size.
+	// For example, Shockwave files will be able to return size but be 'application/shockwave' or similar.
+	if (!empty($attachmentOptions['mime_type']) && strpos($attachmentOptions['mime_type'], 'image/') !== 0)
+	{
+		$attachmentOptions['width'] = 0;
+		$attachmentOptions['height'] = 0;
+	}
+
+	// Get the hash if no hash has been given yet.]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[	// Now fix possible security problems with images loading links automatically...
+	$message = preg_replace('~(\[img.*?\])(.+?)\[/img\]~eis', '\'$1\' . preg_replace(\'~action(=|%3d)(?!dlattach)~i\', \'action-\', \'$2\') . \'[/img]\'', $message);
+]]></search>
+			<add><![CDATA[	// Now fix possible security problems with images loading links automatically...
+	$message = preg_replace_callback('~(\[img.*?\])(.+?)\[/img\]~is', create_function('$m', 'return "$m[1]" . preg_replace("~action(=|%3d)(?!dlattach)~i", "action-", "$m[2]") . "[/img]";'), $message);
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[		if ($simple)
+			$string = preg_replace('~&#(\d{3,8});~e', 'chr(\'$1\')', $string);
+		else
+]]></search>
+			<add><![CDATA[		if ($simple)
+			$string = preg_replace_callback('~&#(\d{3,8});~', create_function('$m', ' return chr("$m[1]");'), $string);
+		else
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[			$string = preg_replace('~&#(\d{3,8});~e', '$fixchar(\'$1\')', $string);
+
+			// Unicode, baby.
+]]></search>
+			<add><![CDATA[			$string = preg_replace_callback('~&#(\d{3,8});~', 'fixchar__callback', $string);
+
+			// Unicode, baby.
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[		// Convert all 'special' characters to HTML entities.
+		return array($charset, preg_replace('~([\x80-' . ($context['server']['complex_preg_chars'] ? '\x{10FFFF}' : "\xF7\xBF\xBF\xBF") . '])~eu', '$entityConvert(\'\1\')', $string), '7bit');
+]]></search>
+			<add><![CDATA[		$entityConvert = create_function('$m', '
+			$c = $m[1];
+			if (strlen($c) === 1 && ord($c[0]) <= 0x7F)
+				return $c;
+			elseif (strlen($c) === 2 && ord($c[0]) >= 0xC0 && ord($c[0]) <= 0xDF)
+				return "&#" . (((ord($c[0]) ^ 0xC0) << 6) + (ord($c[1]) ^ 0x80)) . ";";
+			elseif (strlen($c) === 3 && ord($c[0]) >= 0xE0 && ord($c[0]) <= 0xEF)
+				return "&#" . (((ord($c[0]) ^ 0xE0) << 12) + ((ord($c[1]) ^ 0x80) << 6) + (ord($c[2]) ^ 0x80)) . ";";
+			elseif (strlen($c) === 4 && ord($c[0]) >= 0xF0 && ord($c[0]) <= 0xF7)
+				return "&#" . (((ord($c[0]) ^ 0xF0) << 18) + ((ord($c[1]) ^ 0x80) << 12) + ((ord($c[2]) ^ 0x80) << 6) + (ord($c[3]) ^ 0x80)) . ";";
+			else
+				return "";');
+
+		// Convert all 'special' characters to HTML entities.
+		return array($charset, preg_replace_callback('~([\x80-\x{10FFFF}])~u', $entityConvert, $string), '7bit');
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[	// Clean up after nobbc ;).
+	$message = preg_replace('~\[nobbc\](.+?)\[/nobbc\]~ie', '\'[nobbc]\' . strtr(\'$1\', array(\'[\' => \'&#91;\', \']\' => \'&#93;\', \':\' => \'&#58;\', \'@\' => \'&#64;\')) . \'[/nobbc]\'', $message);
+]]></search>
+			<add><![CDATA[	// Clean up after nobbc ;).
+	$message = preg_replace_callback('~\[nobbc\](.+?)\[/nobbc\]~i', create_function('$m', ' return "[nobbc]" . strtr("$m[1]", array("[" => "&#91;", "]" => "&#93;", ":" => "&#58;", "@" => "&#64;")) . "[/nobbc]";'), $message);
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[			// Let's look at the time tags...
+			$parts[$i] = preg_replace('~\[time(?:=(absolute))*\](.+?)\[/time\]~ie', '\'[time]\' . (is_numeric(\'$2\') || @strtotime(\'$2\') == 0 ? \'$2\' : strtotime(\'$2\') - (\'$1\' == \'absolute\' ? 0 : (($modSettings[\'time_offset\'] + $user_info[\'time_offset\']) * 3600))) . \'[/time]\'', $parts[$i]);
+]]></search>
+			<add><![CDATA[			// Let's look at the time tags...
+			$parts[$i] = preg_replace_callback('~\[time(?:=(absolute))*\](.+?)\[/time\]~i', create_function('$m', 'global $modSettings, $user_info; return "[time]" . (is_numeric("$m[2]") || @strtotime("$m[2]") == 0 ? "$m[2]" : strtotime("$m[2]") - ("$m[1]" == "absolute" ? 0 : (($modSettings["time_offset"] + $user_info["time_offset"]) * 3600))) . "[/time]";'), $parts[$i]);
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[			// Make sure all tags are lowercase.
+			$parts[$i] = preg_replace('~\[([/]?)(list|li|table|tr|td)((\s[^\]]+)*)\]~ie', '\'[$1\' . strtolower(\'$2\') . \'$3]\'', $parts[$i]);
+]]></search>
+			<add><![CDATA[			// Make sure all tags are lowercase.
+			$parts[$i] = preg_replace_callback('~\[([/]?)(list|li|table|tr|td)((\s[^\]]+)*)\]~i', create_function('$m', ' return "[$m[1]" . strtolower("$m[2]") . "$m[3]]";'), $parts[$i]);
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[		// If $i is a multiple of four (0, 4, 8, ...) then it's not a code section...
+		if ($i % 4 == 0)
+		{
+			$parts[$i] = preg_replace('~\[html\](.+?)\[/html\]~ie', '\'[html]\' . strtr(htmlspecialchars(\'$1\', ENT_QUOTES), array(\'\\&quot;\' => \'&quot;\', \'&amp;#13;\' => \'<br />\', \'&amp;#32;\' => \' \', \'&amp;#91;\' => \'[\', \'&amp;#93;\' => \']\')) . \'[/html]\'', $parts[$i]);
+]]></search>
+			<add><![CDATA[		// If $i is a multiple of four (0, 4, 8, ...) then it's not a code section...
+		if ($i % 4 == 0)
+		{
+			$parts[$i] = preg_replace_callback('~\[html\](.+?)\[/html\]~i', create_function('$m', 'return "[html]" . strtr(htmlspecialchars("$m[1]", ENT_QUOTES), array("\\&quot;" => "&quot;", "&amp;#13;" => "<br />", "&amp;#32;" => " ", "&amp;#91;" => "[", "&amp;#93;" => "]")) . "[/html]";'), $parts[$i]);
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[			// Attempt to un-parse the time to something less awful.
+			$parts[$i] = preg_replace('~\[time\](\d{0,10})\[/time\]~ie', '\'[time]\' . timeformat(\'$1\', false) . \'[/time]\'', $parts[$i]);
+]]></search>
+			<add><![CDATA[			// Attempt to un-parse the time to something less awful.
+			$parts[$i] = preg_replace_callback('~\[time\](\d{0,10})\[/time\]~i', create_function('$m', ' return "[time]" . timeformat("$m[1]", false) . "[/time]";'), $parts[$i]);
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[				if (allowedTo('admin_forum'))
+					$parts[$i] = preg_replace('~\[html\](.+?)\[/html\]~ise', '\'[html]\' . strtr(un_htmlspecialchars(\'$1\'), array("\n" => \'&#13;\', \'  \' => \' &#32;\', \'[\' => \'&#91;\', \']\' => \'&#93;\')) . \'[/html]\'', $parts[$i]);
+]]></search>
+			<add><![CDATA[				if (allowedTo('admin_forum'))
+				{
+					static $htmlfunc = null;
+					if ($htmlfunc === null)
+						$htmlfunc = create_function('$m', 'return \'[html]\' . strtr(un_htmlspecialchars("$m[1]"), array("\n" => \'&#13;\', \'  \' => \' &#32;\', \'[\' => \'&#91;\', \']\' => \'&#93;\')) . \'[/html]\';');
+					$parts[$i] = preg_replace_callback('~\[html\](.+?)\[/html\]~is', $htmlfunc, $parts[$i]);
+				}
+]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/LogInOut.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.6
+]]></search>
+ 			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.7
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[// Are we using any sort of integration to validate the login?]]></search>
+			<add><![CDATA[// And if it's too long, trim it back.
+	if ($smcFunc['strlen']($_POST['user']) > 80)
+	{
+		$_POST['user'] = $smcFunc['substr']($_POST['user'], 0, 79);
+		$context['default_username'] = preg_replace('~&amp;#(\\d{1,7}|x[0-9a-fA-F]{1,6});~', '&#\\1;', $smcFunc['htmlspecialchars']($_POST['user']));
+	}
+
+	// Are we using any sort of integration to validate the login?]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/ManageMembergroups.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0
+]]></search>
+ 			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.7
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[if ($_POST['group_inherit'] != -2 && !allowedTo('admin_forum'))]]></search>
+			<add><![CDATA[if ($_REQUEST['group'] > 1 && $_REQUEST['group'] != 3 && isset($_POST['group_inherit']) && $_POST['group_inherit'] != -2 && !allowedTo('admin_forum'))]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Subs.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.6
+]]></search>
+ 			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.7
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[	$modSettings[$hook] = implode(',', $functions);
+}
+]]></search>
+			<add><![CDATA[	$modSettings[$hook] = implode(',', $functions);
+}
+
+// Decode numeric html entities to their ascii or UTF8 equivalent character.
+function replaceEntities__callback($matches)
+{
+	global $context;
+
+	if (!isset($matches[2]))
+		return '';
+
+	$num = $matches[2][0] === 'x' ? hexdec(substr($matches[2], 1)) : (int) $matches[2];
+
+	// remove left to right / right to left overrides
+	if ($num === 0x202D || $num === 0x202E)
+		return '';
+
+	// Quote, Ampersand, Apostrophe, Less/Greater Than get html replaced
+	if (in_array($num, array(0x22, 0x26, 0x27, 0x3C, 0x3E)))
+		return '&#' . $num . ';';
+
+	if (empty($context['utf8']))
+	{
+		// no control characters
+		if ($num < 0x20)
+			return '';
+		// text is text
+		elseif ($num < 0x80)
+			return chr($num);
+		// all others get html-ised
+		else
+			return '&#' . $matches[2] . ';';
+	}
+	else
+	{
+		// <0x20 are control characters, 0x20 is a space, > 0x10FFFF is past the end of the utf8 character set
+		// 0xD800 >= $num <= 0xDFFF are surrogate markers (not valid for utf8 text)
+		if ($num < 0x20 || $num > 0x10FFFF || ($num >= 0xD800 && $num <= 0xDFFF))
+			return '';
+		// <0x80 (or less than 128) are standard ascii characters a-z A-Z 0-9 and puncuation
+		elseif ($num < 0x80)
+			return chr($num);
+		// <0x800 (2048)
+		elseif ($num < 0x800)
+			return chr(($num >> 6) + 192) . chr(($num & 63) + 128);
+		// < 0x10000 (65536)
+		elseif ($num < 0x10000)
+			return chr(($num >> 12) + 224) . chr((($num >> 6) & 63) + 128) . chr(($num & 63) + 128);
+		// <= 0x10FFFF (1114111)
+		else
+			return chr(($num >> 18) + 240) . chr((($num >> 12) & 63) + 128) . chr((($num >> 6) & 63) + 128) . chr(($num & 63) + 128);
+	}
+}
+
+// Converts html entities to utf8 equivalents.
+function fixchar__callback($matches)
+{
+	if (!isset($matches[1]))
+		return '';
+
+	$num = $matches[1][0] === 'x' ? hexdec(substr($matches[1], 1)) : (int) $matches[1];
+
+	// <0x20 are control characters, > 0x10FFFF is past the end of the utf8 character set
+	// 0xD800 >= $num <= 0xDFFF are surrogate markers (not valid for utf8 text), 0x202D-E are left to right overrides
+	if ($num < 0x20 || $num > 0x10FFFF || ($num >= 0xD800 && $num <= 0xDFFF) || $num === 0x202D || $num === 0x202E)
+		return '';
+	// <0x80 (or less than 128) are standard ascii characters a-z A-Z 0-9 and puncuation
+	elseif ($num < 0x80)
+		return chr($num);
+	// <0x800 (2048)
+	elseif ($num < 0x800)
+		return chr(($num >> 6) + 192) . chr(($num & 63) + 128);
+	// < 0x10000 (65536)
+	elseif ($num < 0x10000)
+		return chr(($num >> 12) + 224) . chr((($num >> 6) & 63) + 128) . chr(($num & 63) + 128);
+	// <= 0x10FFFF (1114111)
+	else
+		return chr(($num >> 18) + 240) . chr((($num >> 12) & 63) + 128) . chr((($num >> 6) & 63) + 128) . chr(($num & 63) + 128);
+}
+
+// Strips out invalid html entities, replaces others with html style &#123; codes.
+function entity_fix__callback($matches)
+{
+	if (!isset($matches[2]))
+		return '';
+
+	$num = $matches[2][0] === 'x' ? hexdec(substr($matches[2], 1)) : (int) $matches[2];
+
+	// we don't allow control characters, characters out of range, byte markers, etc
+	if ($num < 0x20 || $num > 0x10FFFF || ($num >= 0xD800 && $num <= 0xDFFF) || $num == 0x202D || $num == 0x202E)
+		return '';
+	else
+		return '&#' . $num . ';';
+}
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[		$smileyPregSearch = '~(?<=[>:\?\.\s' . $non_breaking_space . '[\]()*\\\;]|^)(' . implode('|', $searchParts) . ')(?=[^[:alpha:]0-9]|$)~e' . ($context['utf8'] ? 'u' : '');
+	}
+
+	// Replace away!
+	$message = preg_replace($smileyPregSearch, 'isset($smileyPregReplacements[\'$1\']) ? $smileyPregReplacements[\'$1\'] : \'\'', $message);
+}
+]]></search>
+			<add><![CDATA[		$smileyPregSearch = '~(?<=[>:\?\.\s' . $non_breaking_space . '[\]()*\\\;]|^)(' . implode('|', $searchParts) . ')(?=[^[:alpha:]0-9]|$)~' . ($context['utf8'] ? 'u' : '');
+	}
+
+	// Replace away!
+
+	// TODO: When SMF supports only PHP 5.3+, we can change this to "uses" keyword and simplify this.
+	$callback = pregReplaceCurry('smielyPregReplaceCallback', 2);
+	$message = preg_replace_callback($smileyPregSearch, $callback($smileyPregReplacements), $message);
+}
+
+// This allows use to do delayed argument binding and bring in the replacement variables for some preg replacements.
+function pregReplaceCurry($func, $arity)
+{
+	return create_function('', "
+		\$args = func_get_args();
+		if(count(\$args) >= $arity)
+			return call_user_func_array('$func', \$args);
+		\$args = var_export(\$args, 1);
+		return create_function('','
+			\$a = func_get_args();
+			\$z = ' . \$args . ';
+			\$a = array_merge(\$z,\$a);
+			return call_user_func_array(\'$func\', \$a);
+		');
+	");
+}
+
+// Our callback that does the actual smiley replacements.
+function smielyPregReplaceCallback($replacements, $matches)
+{
+    return $replacements[$matches[1]];
+}]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[					// This is done in a roundabout way because $breaker has "long words" :P.
+					$data = strtr($data, array($breaker => '< >', '&nbsp;' => $context['utf8'] ? "\xC2\xA0" : "\xA0"));
+					$data = preg_replace(
+						'~(?<=[>;:!? ' . $non_breaking_space . '\]()]|^)([\w' . ($context['utf8'] ? '\pL' : '') . '\.]{' . $modSettings['fixLongWords'] . ',})~e' . ($context['utf8'] ? 'u' : ''),
+						'preg_replace(\'/(.{' . ($modSettings['fixLongWords'] - 1) . '})/' . ($context['utf8'] ? 'u' : '') . '\', \'\\$1< >\', \'$1\')',
+						$data);
+]]></search>
+			<add><![CDATA[					// This is done in a roundabout way because $breaker has "long words" :P.
+					$data = strtr($data, array($breaker => '< >', '&nbsp;' => $context['utf8'] ? "\xC2\xA0" : "\xA0"));
+					$data = preg_replace_callback(
+						'~(?<=[>;:!? ' . $non_breaking_space . '\]()]|^)([\w' . ($context['utf8'] ? '\pL' : '') . '\.]{' . $modSettings['fixLongWords'] . ',})~' . ($context['utf8'] ? 'u' : ''),
+						create_function('$m', 'return preg_replace(\'~(.{' . ($modSettings['fixLongWords'] - 1) . '})~' . ($context['utf8'] ? 'u' : '') . '\', \'$1< >\', "$m[1]");'),
+						$data);
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$setLocation = preg_replace('/^' . preg_quote($scripturl, '/') . '\?(?:']]></search>
+			<add><![CDATA[$setLocation = preg_replace_callback('~"' . preg_quote($scripturl, '/') . '\?(?:']]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$/e', "\$scripturl . '/' . strtr('\$1', '&;=', '//,') . '.html\$2?' . SID", $setLocation);]]></search>
+			<add><![CDATA[$~', create_function('$m', 'global $scripturl; return $scripturl . \'/\' . strtr("$m[1]", \'&;=\', \'//,\') . \'.html?\' . SID . (isset($m[2]) ? "$m[2]" : "");'), $setLocation);]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$setLocation = preg_replace('/^' . preg_quote($scripturl, '/') . '\?((]]></search>
+			<add><![CDATA[$setLocation = preg_replace_callback('~"' . preg_quote($scripturl, '/') . '\?((]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$/e', "\$scripturl . '/' . strtr('\$1', '&;=', '//,') . '.html\$2'", $setLocation);]]></search>
+			<add><![CDATA[$~', create_function('$m', 'global $scripturl; return $scripturl . \'/\' . strtr("$m[1]", \'&;=\', \'//,\') . \'.html\' . (isset($m[2]) ? "$m[2]" : "");'), $setLocation);]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/ManageMaintenance.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.1
+]]></search>
+ 			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.7
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[						$insertion_variables['changes_' . $column_name] = preg_replace('~(&#(\d{1,7}|x[0-9a-fA-F]{1,6});)~e', '$entity_replace(\'\\2\')', $column_value);
+]]></search>
+			<add><![CDATA[						$insertion_variables['changes_' . $column_name] = preg_replace_callback('~&#(\d{1,7}|x[0-9a-fA-F]{1,6});~', 'fixchar__callback', $column_value);
+]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Subs-Auth.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0
+]]></search>
+ 			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.7
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[			$row['real_name'] = preg_replace('~&#(\d+);~e', '$fixchar(\'$1\')', $row['real_name']);
+]]></search>
+			<add><![CDATA[			$row['real_name'] = preg_replace_callback('~&#(\d+);~', 'fixchar__callback', $row['real_name']);
+]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Display.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0
+]]></search>
+ 			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.7
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[	// Different browsers like different standards...
+	if ($context['browser']['is_firefox'])
+		header('Content-Disposition: ' . $disposition . '; filename*="UTF-8\'\'' . preg_replace('~&#(\d{3,8});~e', '$fixchar(\'$1\')', $utf8name) . '"');
+]]></search>
+			<add><![CDATA[	// Different browsers like different standards...
+	if ($context['browser']['is_firefox'])
+		header('Content-Disposition: ' . $disposition . '; filename*=UTF-8\'\'' . rawurlencode(preg_replace_callback('~&#(\d{3,8});~', 'fixchar__callback', $utf8name)));
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[	elseif ($context['browser']['is_opera'])
+		header('Content-Disposition: ' . $disposition . '; filename="' . preg_replace('~&#(\d{3,8});~e', '$fixchar(\'$1\')', $utf8name) . '"');
+]]></search>
+			<add><![CDATA[	elseif ($context['browser']['is_opera'])
+		header('Content-Disposition: ' . $disposition . '; filename="' . preg_replace_callback('~&#(\d{3,8});~', 'fixchar__callback', $utf8name) . '"');
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[	elseif ($context['browser']['is_ie'])
+		header('Content-Disposition: ' . $disposition . '; filename="' . urlencode(preg_replace('~&#(\d{3,8});~e', '$fixchar(\'$1\')', $utf8name)) . '"');
+]]></search>
+			<add><![CDATA[	elseif ($context['browser']['is_ie'])
+		header('Content-Disposition: ' . $disposition . '; filename="' . urlencode(preg_replace_callback('~&#(\d{3,8});~', 'fixchar__callback', $utf8name)) . '"');
+]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Subs-Members.php">
+		<operation error="ignore">
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.1
+]]></search>
+ 			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.7
+]]></add>
+		</operation>
+		<operation error="ignore">
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.6
+]]></search>
+ 			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.7
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[	$name = preg_replace('~(&#(\d{1,7}|x[0-9a-fA-F]{1,6});)~e', '$replaceEntities(\'\\2\')', $name);
+	$checkName = $smcFunc['strtolower']($name);
+]]></search>
+			<add><![CDATA[	$name = preg_replace_callback('~(&#(\d{1,7}|x[0-9a-fA-F]{1,6});)~', 'replaceEntities__callback', $name);
+	$checkName = $smcFunc['strtolower']($name);
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[			// The admin might've used entities too, level the playing field.
+			$reservedCheck = preg_replace('~(&#(\d{1,7}|x[0-9a-fA-F]{1,6});)~e', '$replaceEntities(\'\\2\')', $reserved);
+]]></search>
+			<add><![CDATA[			// The admin might've used entities too, level the playing field.
+			$reservedCheck = preg_replace('~(&#(\d{1,7}|x[0-9a-fA-F]{1,6});)~', 'replaceEntities__callback', $reserved);
+]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Modlog.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.3
+]]></search>
+ 			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.7
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[	// Do some formatting of the action string.
+	foreach ($entries as $k => $entry)
+]]></search>
+			<add><![CDATA[	// Do some formatting of the action string.
+	$callback = pregReplaceCurry('list_getModLogEntriesCallback', 3);
+	foreach ($entries as $k => $entry)
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[		$entries[$k]['action_text'] = preg_replace('~\{([A-Za-z\d_]+)\}~ie', 'isset($entries[$k][\'extra\'][\'$1\']) ? $entries[$k][\'extra\'][\'$1\'] : \'\'', $entries[$k]['action_text']);
+	}
+
+	// Back we go!
+	return $entries;
+}
+]]></search>
+			<add><![CDATA[		$entries[$k]['action_text'] = preg_replace_callback('~\{([A-Za-z\d_]+)\}~i', $callback($entries, $k), $entries[$k]['action_text']);
+
+	}
+
+	// Back we go!
+	return $entries;
+}
+
+// Mog Log Replacment Callback.
+function list_getModLogEntriesCallback($entries, $key, $matches)
+{
+    return isset($entries[$key]['extra'][$matches[1]]) ? $entries[$key]['extra'][$matches[1]] : '';
+}
+]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Subs-Editor.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0
+]]></search>
+ 			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.7
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[	// Parse unique ID's and disable javascript into the smileys - using the double space.
+	$i = 1;
+	$text = preg_replace('~(?:\s|&nbsp;)?<(img\ssrc="' . preg_quote($modSettings['smileys_url'], '~') . '/[^<>]+?/([^<>]+?)"\s*)[^<>]*?class="smiley" />~e', '\'<\' . ' . 'stripslashes(\'$1\') . \'alt="" title="" onresizestart="return false;" id="smiley_\' . ' . "\$" . 'i++ . \'_$2" style="padding: 0 3px 0 3px;" />\'', $text);
+]]></search>
+			<add><![CDATA[	// Parse unique ID's and disable javascript into the smileys - using the double space.
+	$text = preg_replace_callback('~(?:\s|&nbsp;)?<(img\ssrc="' . preg_quote($modSettings['smileys_url'], '~') . '/[^<>]+?/([^<>]+?)"\s*)[^<>]*?class="smiley" />~', create_function('$m', 'static $i = 1; return \'<\' . ' . 'stripslashes($m[1]) . \'alt="" title="" onresizestart="return false;" id="smiley_\' . ' . "\$" . 'i++ . \'_\' . $m[2] . \'" style="padding: 0 3px 0 3px;" />\';'), $text);
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[		'~</tr>~i' => '[/tr]',
+		'~<(td|th)\s[^<>]*?colspan="?(\d{1,2})"?.*?' . '>~ie' => 'str_repeat(\'[td][/td]\', $2 - 1) . \'[td]\'',
+		'~<(td|th)(\s(.)*?)*?' . '>~i' => '[td]',
+]]></search>
+			<add><![CDATA[		'~</tr>~i' => '[/tr]',
+		'~<(td|th)(\s(.)*?)*?' . '>~i' => '[td]',
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[	$text = preg_replace(array_keys($tags), array_values($tags), $text);
+
+	// Please give us just a little more time.
+]]></search>
+			<add><![CDATA[	$text = preg_replace_callback('~<(td|th)\s[^<>]*?colspan="?(\d{1,2})"?.*?' . '>~i', create_function('$m', 'return str_repeat(\'[td][/td]\', $m[2] - 1) . \'[td]\';'), $text);
+	$text = preg_replace(array_keys($tags), array_values($tags), $text);
+
+	// Please give us just a little more time.
+]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Class-Package.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0
+]]></search>
+ 			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.7
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[		// Translate all the entities out.
+		$data = strtr(preg_replace('~&#(\d{1,4});~e', "chr('\$1')", $data), $trans_tbl);
+]]></search>
+			<add><![CDATA[		// Translate all the entities out.
+		$data = strtr(preg_replace_callback('~&#(\d{1,4});~', create_function('$m', 'return chr("$m[1]");'), $data), $trans_tbl);
+]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Post.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0
+]]></search>
+ 			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.7
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[					// It goes 0 = outside, 1 = begin tag, 2 = inside, 3 = close tag, repeat.
+					if ($i % 4 == 0)
+						$parts[$i] = preg_replace('~\[html\](.+?)\[/html\]~ise', '\'[html]\' . preg_replace(\'~<br\s?/?' . '>~i\', \'&lt;br /&gt;<br />\', \'$1\') . \'[/html]\'', $parts[$i]);
+]]></search>
+			<add><![CDATA[					// It goes 0 = outside, 1 = begin tag, 2 = inside, 3 = close tag, repeat.
+					if ($i % 4 == 0)
+						$parts[$i] = preg_replace_callback('~\[html\](.+?)\[/html\]~is', create_function('$m', ' return \'[html]\' . preg_replace(\'~<br\s?/?' . '>~i\', \'&lt;br /&gt;<br />\', "$m[1]") . \'[/html]\';'), $parts[$i]);
+]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/News.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0
+]]></search>
+ 			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.7
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[	$val = preg_replace('/^' . preg_quote($scripturl, '/') . '\?((?:board|topic)=[^#"]+)(#[^"]*)?$/e', '\'\' . $scripturl . \'/\' . strtr(\'$1\', \'&;=\', \'//,\') . \'.html$2\'', $val);
+	return $val;
+]]></search>
+			<add><![CDATA[	$val = preg_replace_callback('~^' . preg_quote($scripturl, '/') . '\?((?:board|topic)=[^#"]+)(#[^"]*)?$~', create_function('$m', 'global $scripturl; return $scripturl . \'/\' . strtr("$m[1]", \'&;=\', \'//,\') . \'.html\' . (isset($m[2]) ? $m[2] : "");'), $val);
+	return $val;
+]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/QueryString.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.6
+]]></search>
+ 			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.7
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$buffer = preg_replace('/"' . preg_quote($scripturl, '/') . '\?(?:']]></search>
+			<add><![CDATA[$buffer = preg_replace_callback('~"' . preg_quote($scripturl, '/') . '\?(?:']]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA["/e', "'\"' . \$scripturl . '/' . strtr('\$1', '&;=', '//,') . '.html?' . SID . '\$2\"'", $buffer);]]></search>
+			<add><![CDATA["~', create_function('$m', 'global $scripturl; return \'"\' . $scripturl . "/" . strtr("$m[1]", \'&;=\', \'//,\') . ".html?" . SID . (isset($m[2]) ? $m[2] : "") . \'"\';'), $buffer);]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$buffer = preg_replace('/"' . preg_quote($scripturl, '/') . '\?((]]></search>
+			<add><![CDATA[$buffer = preg_replace_callback('~"' . preg_quote($scripturl, '/') . '\?((]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA["/e', "'\"' . \$scripturl . '/' . strtr('\$1', '&;=', '//,') . '.html\$2\"'", $buffer);]]></search>
+			<add><![CDATA["~', create_function('$m', 'global $scripturl; return \'"\' . $scripturl . "/" . strtr("$m[1]", \'&;=\', \'//,\') . ".html" . (isset($m[2]) ? $m[2] : "") . \'"\';'), $buffer);]]></add>
+		</operation>
+	</file>
+</modification>

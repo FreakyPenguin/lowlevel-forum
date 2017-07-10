@@ -1,0 +1,708 @@
+<?xml version="1.0"?>
+<!DOCTYPE modification SYSTEM "http://www.simplemachines.org/xml/modification">
+<modification xmlns="http://www.simplemachines.org/xml/modification" xmlns:smf="http://www.simplemachines.org/">
+	<id>smf:smf-2.0.8</id>
+	<version>1.0</version>
+
+	<!--
+	This is primarily addressing the memory issues from creating way too many closure-style functions.
+	Unfortunately the main mitigation is to actually make standard functions rather than proper closures,
+	but until 5.3+ is an actual requirement, there's no way around this.
+
+	There are also uses of the curry function in other places. It's not entirely clear if these can actually
+	be rewritten yet. In the interim, then, bumping the memory limit more generally is really the only option.
+	-->
+
+	<file name="$boarddir/index.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.7
+]]></search>
+			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.8
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+$forum_version = 'SMF 2.0.7';
+]]></search>
+			<add><![CDATA[
+$forum_version = 'SMF 2.0.8';
+@ini_set('memory_limit', '128M');
+]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Class-Package.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.7
+]]></search>
+			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.8
+]]></add>
+		</operation>
+		<operation><!-- 2.0.7 Operation #2; this callback is declared in Subs.php because of general use. -->
+			<search position="replace"><![CDATA[		// Translate all the entities out.
+		$data = strtr(preg_replace_callback('~&#(\d{1,4});~', create_function('$m', 'return chr("$m[1]");'), $data), $trans_tbl);
+]]></search>
+			<add><![CDATA[		// Translate all the entities out.
+		$data = strtr(preg_replace_callback('~&#(\d{1,4});~', 'return_chr__preg_callback', $data), $trans_tbl);
+]]></add>
+		</operation>
+		<operation><!-- Even though we already set the limit to 128M, resetting it to 32M would just lower it! -->
+			<search position="replace"><![CDATA[// If we're using this try to get some more memory.
+		@ini_set('memory_limit', '32M');]]></search>
+			<add><![CDATA[// If we're using this try to get some more memory.
+		@ini_set('memory_limit', '128M');]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Subs-Editor.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.7
+]]></search>
+			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.8
+]]></add>
+		</operation>
+		<operation><!-- Replaces 2.0.7 Operation #2 -->
+			<search position="replace"><![CDATA[	// Parse unique ID's and disable javascript into the smileys - using the double space.
+	$text = preg_replace_callback('~(?:\s|&nbsp;)?<(img\ssrc="' . preg_quote($modSettings['smileys_url'], '~') . '/[^<>]+?/([^<>]+?)"\s*)[^<>]*?class="smiley" />~', create_function('$m', 'static $i = 1; return \'<\' . ' . 'stripslashes($m[1]) . \'alt="" title="" onresizestart="return false;" id="smiley_\' . ' . "\$" . 'i++ . \'_\' . $m[2] . \'" style="padding: 0 3px 0 3px;" />\';'), $text);]]></search>
+			<add><![CDATA[	// Parse unique ID's and disable javascript into the smileys - using the double space.
+	$text = preg_replace_callback('~(?:\s|&nbsp;)?<(img\ssrc="' . preg_quote($modSettings['smileys_url'], '~') . '/[^<>]+?/([^<>]+?)"\s*)[^<>]*?class="smiley" />~', 'uniq_smiley__preg_callback', $text);]]></add>
+		</operation>
+		<operation><!-- Replaces 2.0.7 Operation #4 -->
+			<search position="replace"><![CDATA[$text = preg_replace_callback('~<(td|th)\s[^<>]*?colspan="?(\d{1,2})"?.*?' . '>~i', create_function('$m', 'return str_repeat(\'[td][/td]\', $m[2] - 1) . \'[td]\';'), $text);]]></search>
+			<add><![CDATA[$text = preg_replace_callback('~<(td|th)\s[^<>]*?colspan="?(\d{1,2})"?.*?' . '>~i', 'td_count__preg_callback', $text);]]></add>
+		</operation>
+		<operation><!-- These replace the inline callbacks with predefined ones. Ideally these would be closures but PHP below 5.3 is still a supported requirement. -->
+			<search position="end" />
+			<add><![CDATA[
+
+function uniq_smiley__preg_callback($matches)
+{
+	static $i = 1;
+	return '<' . stripslashes($matches[1]) . 'alt="" title="" onresizestart="return false;" id="smiley_' . ($i++) . '_' . $matches[2] . '" style="padding: 0 3px 0 3px;" />';
+}
+
+function td_count__preg_callback($matches)
+{
+	return str_repeat('[td][/td]', $matches[2] - 1) . '[td]';
+}]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Post.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.7
+]]></search>
+			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.8
+]]></add>
+		</operation>
+		<operation><!-- Replaces 2.0.7 Operation #2 -->
+			<search position="replace"><![CDATA[					if ($i % 4 == 0)
+						$parts[$i] = preg_replace_callback('~\[html\](.+?)\[/html\]~is', create_function('$m', ' return \'[html]\' . preg_replace(\'~<br\s?/?' . '>~i\', \'&lt;br /&gt;<br />\', "$m[1]") . \'[/html]\';'), $parts[$i]);]]></search>
+			<add><![CDATA[					if ($i % 4 == 0)
+						$parts[$i] = preg_replace_callback('~\[html\](.+?)\[/html\]~is', 'strip_html_bbc__preg_callback', $parts[$i]);]]></add>
+		</operation>
+		<operation><!-- Again, a predefined function in place of what should be a closure. -->
+			<search position="end" />
+			<add><![CDATA[
+
+function strip_html_bbc__preg_callback($matches)
+{
+	return '[html]' . preg_replace('~<br\s?/?' . '>~i', '&lt;br /&gt;<br />', $matches[1]) . '[/html]';
+}]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/News.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.7
+]]></search>
+			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.8
+]]></add>
+		</operation>
+		<operation><!-- Replaces 2.0.7 Operation #2 -->
+			<search position="replace"><![CDATA[	$val = preg_replace_callback('~^' . preg_quote($scripturl, '/') . '\?((?:board|topic)=[^#"]+)(#[^"]*)?$~', create_function('$m', 'global $scripturl; return $scripturl . \'/\' . strtr("$m[1]", \'&;=\', \'//,\') . \'.html\' . (isset($m[2]) ? $m[2] : "");'), $val);
+	return $val;]]></search>
+			<add><![CDATA[	$val = preg_replace_callback('~^' . preg_quote($scripturl, '/') . '\?((?:board|topic)=[^#"]+)(#[^"]*)?$~', 'feed_fix__preg_callback', $val);
+	return $val;]]></add>
+		</operation>
+		<operation><!-- Sigh, another closure-wannabe. -->
+			<search position="end" />
+			<add><![CDATA[
+
+function feed_fix__preg_callback($matches)
+{
+	global $scripturl;
+	return $scripturl . '/' . strtr($matches[1], '&;=', '//,') . '.html' . (isset($matches[2]) ? $matches[2] : '');
+}]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/QueryString.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.7
+]]></search>
+			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.8
+]]></add>
+		</operation>
+		<operation><!-- Replaces 2.0.7 Operation #3 -->
+			<search position="replace"><![CDATA["~', create_function('$m', 'global $scripturl; return \'"\' . $scripturl . "/" . strtr("$m[1]", \'&;=\', \'//,\') . ".html?" . SID . (isset($m[2]) ? $m[2] : "") . \'"\';'), $buffer);]]></search>
+			<add><![CDATA["~', 'sid_insert__preg_callback', $buffer);]]></add>
+		</operation>
+		<operation><!-- Replaces 2.0.7 Operation #5 -->
+			<search position="replace"><![CDATA["~', create_function('$m', 'global $scripturl; return \'"\' . $scripturl . "/" . strtr("$m[1]", \'&;=\', \'//,\') . ".html" . (isset($m[2]) ? $m[2] : "") . \'"\';'), $buffer);]]></search>
+			<add><![CDATA["~', 'pathinfo_insert__preg_callback', $buffer);]]></add>
+		</operation>
+		<operation><!-- Yup, you guessed it, more exciting pretend-closures. -->
+			<search position="end" />
+			<add><![CDATA[
+
+function sid_insert__preg_callback($matches)
+{
+	global $scripturl;
+	return '"' . $scripturl . "/" . strtr($matches[1], '&;=', '//,') . ".html?" . SID . (isset($matches[2]) ? $matches[2] : "") . '"';
+}
+
+function pathinfo_insert__preg_callback($matches)
+{
+	global $scripturl;
+	return '"' . $scripturl . "/" . strtr($matches[1], '&;=', '//,') . ".html" . (isset($matches[2]) ? $matches[2] : "") . '"';
+}
+]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Search.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.7
+]]></search>
+			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.8
+]]></add>
+		</operation>
+		<operation><!-- Replaces 2.0.7 Operation #6; this does not fix the bug described in topic 470968 -->
+			<search position="replace"><![CDATA[$body_highlighted = preg_replace_callback('/((<[^>]*)|' . preg_quote(strtr($query, array('\'' => '&#039;')), '/') . ')/i' . ($context['utf8'] ? 'u' : ''), create_function('$m', 'return isset($m[2]) && "$m[2]" == "$m[1]" ? stripslashes("$m[1]") : "<strong class=\"highlight\">$m[1]</strong>";'), $body_highlighted);]]></search>
+			<add><![CDATA[$body_highlighted = preg_replace_callback('/((<[^>]*)|' . preg_quote(strtr($query, array('\'' => '&#039;')), '/') . ')/i' . ($context['utf8'] ? 'u' : ''), 'search_highlight__preg_callback', $body_highlighted);]]></add>
+		</operation>
+		<operation><!-- Faux-closure. -->
+			<search position="end" />
+			<add><![CDATA[
+
+function search_highlight__preg_callback($matches)
+{
+	return isset($matches[2]) && $matches[2] == $matches[1] ? stripslashes($matches[1]) : '<strong class="highlight">' . $matches[1] . '</strong>';
+}]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Subs.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.7
+]]></search>
+			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.8
+]]></add>
+		</operation>
+		<operation><!-- Replaces SMF 2.0.7 Operation #4 -->
+			<search position="replace"><![CDATA[					$data = preg_replace_callback(
+						'~(?<=[>;:!? ' . $non_breaking_space . '\]()]|^)([\w' . ($context['utf8'] ? '\pL' : '') . '\.]{' . $modSettings['fixLongWords'] . ',})~' . ($context['utf8'] ? 'u' : ''),
+						create_function('$m', 'return preg_replace(\'~(.{' . ($modSettings['fixLongWords'] - 1) . '})~' . ($context['utf8'] ? 'u' : '') . '\', \'$1< >\', "$m[1]");'),
+						$data);]]></search>
+			<add><![CDATA[					$data = preg_replace_callback(
+						'~(?<=[>;:!? ' . $non_breaking_space . '\]()]|^)([\w' . ($context['utf8'] ? '\pL' : '') . '\.]{' . $modSettings['fixLongWords'] . ',})~' . ($context['utf8'] ? 'u' : ''),
+						'word_break__preg_callback',
+						$data);]]></add>
+		</operation>
+		<operation><!-- Replaces SMF 2.0.7 Operation #6 -->
+			<search position="replace"><![CDATA[$~', create_function('$m', 'global $scripturl; return $scripturl . \'/\' . strtr("$m[1]", \'&;=\', \'//,\') . \'.html?\' . SID . (isset($m[2]) ? "$m[2]" : "");'), $setLocation);]]></search>
+			<add><![CDATA[$~', 'fix_redirect_sid__preg_callback', $setLocation);]]></add>
+		</operation>
+		<operation><!-- Replaces SMF 2.0.7 Operation #8 -->
+			<search position="replace"><![CDATA[$~', create_function('$m', 'global $scripturl; return $scripturl . \'/\' . strtr("$m[1]", \'&;=\', \'//,\') . \'.html\' . (isset($m[2]) ? "$m[2]" : "");'), $setLocation);]]></search>
+			<add><![CDATA[$~', 'fix_redirect_path__preg_callback', $setLocation);]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[	$callback = pregReplaceCurry('smielyPregReplaceCallback', 2);
+	$message = preg_replace_callback($smileyPregSearch, $callback($smileyPregReplacements), $message);]]></search>
+			<add><![CDATA[	$context['smiley_replacements'] = $smileyPregReplacements;
+	$message = preg_replace_callback($smileyPregSearch, 'smileyPregReplaceCallback', $message);]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+// Our callback that does the actual smiley replacements.
+function smielyPregReplaceCallback($replacements, $matches)
+{
+    return $replacements[$matches[1]];
+}]]></search>
+			<add><![CDATA[
+// Our callback that does the actual smiley replacements.
+function smileyPregReplaceCallback($matches)
+{
+	global $context;
+    return $context['smiley_replacements'][$matches[1]];
+}]]></add>
+		</operation>
+		<operation><!-- Yay for more fake closures. -->
+			<search position="end" />
+			<add><![CDATA[
+
+function word_break__preg_callback($matches)
+{
+	global $modSettings, $context;
+	return preg_replace('~(.{' . ($modSettings['fixLongWords'] - 1) . '})~' . ($context['utf8'] ? 'u' : ''), '$1< >', $matches[1]);
+}
+
+function fix_redirect_sid__preg_callback($matches)
+{
+	global $scripturl;
+	return $scripturl . '/' . strtr($matches[1], '&;=', '//,') . '.html?' . SID . (isset($matches[2]) ? $matches[2] : '');
+}
+
+function fix_redirect_path__preg_callback($matches)
+{
+	global $scripturl;
+	return $scripturl . '/' . strtr($matches[1], '&;=', '//,') . '.html' . (isset($matches[2]) ? $matches[2] : '');
+}
+
+function return_chr__preg_callback($matches)
+{
+	return chr($matches[1]);
+}]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Subs-Post.php">
+		<operation error="ignore"><!-- Some 2.0.7 packages missed 2.0.7 Operation #13. Either way the version needs to be fixed. -->
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0
+]]></search>
+			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.8
+]]></add>
+		</operation>
+		<operation error="ignore"><!-- Some 2.0.7 packages missed 2.0.7 Operation #13. Either way the version needs to be fixed. -->
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.7
+]]></search>
+			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.8
+]]></add>
+		</operation>
+		<operation error="ignore"><!-- Some 2.0.7 packages missed 2.0.7 Operation #13. Here it is. -->
+			<search position="replace"><![CDATA[				if (allowedTo('admin_forum'))
+					$parts[$i] = preg_replace('~\[html\](.+?)\[/html\]~ise', '\'[html]\' . strtr(un_htmlspecialchars(\'$1\'), array("\n" => \'&#13;\', \'  \' => \' &#32;\', \'[\' => \'&#91;\', \']\' => \'&#93;\')) . \'[/html]\'', $parts[$i]);
+]]></search>
+			<add><![CDATA[				if (allowedTo('admin_forum'))
+				{
+					static $htmlfunc = null;
+					if ($htmlfunc === null)
+						$htmlfunc = create_function('$m', 'return \'[html]\' . strtr(un_htmlspecialchars("$m[1]"), array("\n" => \'&#13;\', \'  \' => \' &#32;\', \'[\' => \'&#91;\', \']\' => \'&#93;\')) . \'[/html]\';');
+					$parts[$i] = preg_replace_callback('~\[html\](.+?)\[/html\]~is', $htmlfunc, $parts[$i]);
+				}
+]]></add>
+		</operation>
+		<!-- And now to the rest. -->
+		<operation><!-- Replaces SMF 2.0.7 Operation #4 -->
+			<search position="replace"><![CDATA[// Now fix possible security problems with images loading links automatically...
+	$message = preg_replace_callback('~(\[img.*?\])(.+?)\[/img\]~is', create_function('$m', 'return "$m[1]" . preg_replace("~action(=|%3d)(?!dlattach)~i", "action-", "$m[2]") . "[/img]";'), $message);]]></search>
+			<add><![CDATA[// Now fix possible security problems with images loading links automatically...
+	$message = preg_replace_callback('~(\[img.*?\])(.+?)\[/img\]~is', 'action_fix__preg_callback', $message);]]></add>
+		</operation>
+		<operation><!-- Replaces SMF 2.0.7 Operation #5 -->
+			<search position="replace"><![CDATA[		if ($simple)
+			$string = preg_replace_callback('~&#(\d{3,8});~', create_function('$m', ' return chr("$m[1]");'), $string);
+		else]]></search>
+			<add><![CDATA[		if ($simple)
+			$string = preg_replace_callback('~&#(\d{3,8});~', 'return_chr__preg_callback', $string);
+		else]]></add>
+		</operation>
+		<operation><!-- Replaces SMF 2.0.7 Operation #7, including the old code we weren't using any more. -->
+			<search position="replace"><![CDATA[		$entityConvert = create_function('$c', '
+			if (strlen($c) === 1 && ord($c[0]) <= 0x7F)
+				return $c;
+			elseif (strlen($c) === 2 && ord($c[0]) >= 0xC0 && ord($c[0]) <= 0xDF)
+				return "&#" . (((ord($c[0]) ^ 0xC0) << 6) + (ord($c[1]) ^ 0x80)) . ";";
+			elseif (strlen($c) === 3 && ord($c[0]) >= 0xE0 && ord($c[0]) <= 0xEF)
+				return "&#" . (((ord($c[0]) ^ 0xE0) << 12) + ((ord($c[1]) ^ 0x80) << 6) + (ord($c[2]) ^ 0x80)) . ";";
+			elseif (strlen($c) === 4 && ord($c[0]) >= 0xF0 && ord($c[0]) <= 0xF7)
+				return "&#" . (((ord($c[0]) ^ 0xF0) << 18) + ((ord($c[1]) ^ 0x80) << 12) + ((ord($c[2]) ^ 0x80) << 6) + (ord($c[3]) ^ 0x80)) . ";";
+			else
+				return "";');
+
+		$entityConvert = create_function('$m', '
+			$c = $m[1];
+			if (strlen($c) === 1 && ord($c[0]) <= 0x7F)
+				return $c;
+			elseif (strlen($c) === 2 && ord($c[0]) >= 0xC0 && ord($c[0]) <= 0xDF)
+				return "&#" . (((ord($c[0]) ^ 0xC0) << 6) + (ord($c[1]) ^ 0x80)) . ";";
+			elseif (strlen($c) === 3 && ord($c[0]) >= 0xE0 && ord($c[0]) <= 0xEF)
+				return "&#" . (((ord($c[0]) ^ 0xE0) << 12) + ((ord($c[1]) ^ 0x80) << 6) + (ord($c[2]) ^ 0x80)) . ";";
+			elseif (strlen($c) === 4 && ord($c[0]) >= 0xF0 && ord($c[0]) <= 0xF7)
+				return "&#" . (((ord($c[0]) ^ 0xF0) << 18) + ((ord($c[1]) ^ 0x80) << 12) + ((ord($c[2]) ^ 0x80) << 6) + (ord($c[3]) ^ 0x80)) . ";";
+			else
+				return "";');
+
+		// Convert all 'special' characters to HTML entities.
+		return array($charset, preg_replace_callback('~([\x80-\x{10FFFF}])~u', $entityConvert, $string), '7bit');]]></search>
+			<add><![CDATA[		// Convert all 'special' characters to HTML entities.
+		return array($charset, preg_replace_callback('~([\x80-\x{10FFFF}])~u', 'mime_convert__preg_callback', $string), '7bit');]]></add>
+		</operation>
+		<operation><!-- Replaces SMF 2.0.7 Operation #8 -->
+			<search position="replace"><![CDATA[	// Clean up after nobbc ;).
+	$message = preg_replace_callback('~\[nobbc\](.+?)\[/nobbc\]~i', create_function('$m', ' return "[nobbc]" . strtr("$m[1]", array("[" => "&#91;", "]" => "&#93;", ":" => "&#58;", "@" => "&#64;")) . "[/nobbc]";'), $message);]]></search>
+			<add><![CDATA[	// Clean up after nobbc ;).
+	$message = preg_replace_callback('~\[nobbc\](.+?)\[/nobbc\]~is', 'nobbc__preg_callback', $message);]]></add>
+		</operation>
+		<operation><!-- Replaces SMF 2.0.7 Operation #9 -->
+			<search position="replace"><![CDATA[			// Let's look at the time tags...
+			$parts[$i] = preg_replace_callback('~\[time(?:=(absolute))*\](.+?)\[/time\]~i', create_function('$m', 'global $modSettings, $user_info; return "[time]" . (is_numeric("$m[2]") || @strtotime("$m[2]") == 0 ? "$m[2]" : strtotime("$m[2]") - ("$m[1]" == "absolute" ? 0 : (($modSettings["time_offset"] + $user_info["time_offset"]) * 3600))) . "[/time]";'), $parts[$i]);]]></search>
+			<add><![CDATA[			// Let's look at the time tags...
+			$parts[$i] = preg_replace_callback('~\[time(?:=(absolute))*\](.+?)\[/time\]~i', 'time_fix__preg_callback', $parts[$i]);]]></add>
+		</operation>
+		<operation><!-- Replaces SMF 2.0.7 Operation #10 -->
+			<search position="replace"><![CDATA[			// Make sure all tags are lowercase.
+			$parts[$i] = preg_replace_callback('~\[([/]?)(list|li|table|tr|td)((\s[^\]]+)*)\]~i', create_function('$m', ' return "[$m[1]" . strtolower("$m[2]") . "$m[3]]";'), $parts[$i]);]]></search>
+			<add><![CDATA[			// Make sure all tags are lowercase.
+			$parts[$i] = preg_replace_callback('~\[([/]?)(list|li|table|tr|td)((\s[^\]]+)*)\]~i', 'lowercase_tags__preg_callback', $parts[$i]);]]></add>
+		</operation>
+		<operation><!-- Replaces SMF 2.0.7 Operation #11 -->
+			<search position="replace"><![CDATA[		// If $i is a multiple of four (0, 4, 8, ...) then it's not a code section...
+		if ($i % 4 == 0)
+		{
+			$parts[$i] = preg_replace_callback('~\[html\](.+?)\[/html\]~i', create_function('$m', 'return "[html]" . strtr(htmlspecialchars("$m[1]", ENT_QUOTES), array("\\&quot;" => "&quot;", "&amp;#13;" => "<br />", "&amp;#32;" => " ", "&amp;#91;" => "[", "&amp;#93;" => "]")) . "[/html]";'), $parts[$i]);]]></search>
+			<add><![CDATA[		// If $i is a multiple of four (0, 4, 8, ...) then it's not a code section...
+		if ($i % 4 == 0)
+		{
+			$parts[$i] = preg_replace_callback('~\[html\](.+?)\[/html\]~i', 'htmlspecial_html__preg_callback', $parts[$i]);]]></add>
+		</operation>
+		<operation><!-- Replaces SMF 2.0.7 Operation #12 -->
+			<search position="replace"><![CDATA[// Attempt to un-parse the time to something less awful.
+			$parts[$i] = preg_replace_callback('~\[time\](\d{0,10})\[/time\]~i', create_function('$m', ' return "[time]" . timeformat("$m[1]", false) . "[/time]";'), $parts[$i]);]]></search>
+			<add><![CDATA[// Attempt to un-parse the time to something less awful.
+			$parts[$i] = preg_replace_callback('~\[time\](\d{0,10})\[/time\]~i', 'time_format__preg_callback', $parts[$i]);]]></add>
+		</operation>
+		<operation><!-- So you know what this means! -->
+			<search position="end" />
+			<add><![CDATA[
+
+function action_fix__preg_callback($matches)
+{
+	return $matches[1] . preg_replace('~action(=|%3d)(?!dlattach)~i', 'action-', $matches[2]) . '[/img]';
+}
+
+function mime_convert__preg_callback($matches)
+{
+	// I get the feeling we could possibly ditch this and reuse fixchar__callback but handling for < 0x20
+	// may not be appropriate here.
+
+	$c = $matches[1];
+	if (strlen($c) === 1 && ord($c[0]) <= 0x7F)
+		return $c;
+	elseif (strlen($c) === 2 && ord($c[0]) >= 0xC0 && ord($c[0]) <= 0xDF)
+		return '&#' . (((ord($c[0]) ^ 0xC0) << 6) + (ord($c[1]) ^ 0x80)) . ';';
+	elseif (strlen($c) === 3 && ord($c[0]) >= 0xE0 && ord($c[0]) <= 0xEF)
+		return '&#' . (((ord($c[0]) ^ 0xE0) << 12) + ((ord($c[1]) ^ 0x80) << 6) + (ord($c[2]) ^ 0x80)) . ';';
+	elseif (strlen($c) === 4 && ord($c[0]) >= 0xF0 && ord($c[0]) <= 0xF7)
+		return '&#' . (((ord($c[0]) ^ 0xF0) << 18) + ((ord($c[1]) ^ 0x80) << 12) + ((ord($c[2]) ^ 0x80) << 6) + (ord($c[3]) ^ 0x80)) . ';';
+	else
+		return '';
+}
+
+function time_fix__preg_callback($matches)
+{
+	global $modSettings, $user_info;
+	return '[time]' . (is_numeric($matches[2]) || @strtotime($matches[2]) == 0 ? $matches[2] : strtotime($matches[2]) - ($matches[1] == 'absolute' ? 0 : (($modSettings['time_offset'] + $user_info['time_offset']) * 3600))) . '[/time]';
+}
+
+function nobbc__preg_callback($matches)
+{
+	return '[nobbc]' . strtr($matches[1], array('[' => '&#91;', ']' => '&#93;', ':' => '&#58;', '@' => '&#64;')) . '[/nobbc]';
+}
+
+function lowercase_tags__preg_callback($matches)
+{
+	return '[' . $matches[1] . strtolower($matches[2]) . $matches[3] . ']';
+}
+
+function htmlspecial_html__preg_callback($matches)
+{
+	// Since we're calling htmlspecialchars we probably should know what charset we're using.
+	global $modSettings, $txt;
+	static $charset = null;
+	if ($charset === null)
+		$charset = empty($modSettings['global_character_set']) ? $txt['lang_character_set'] : $modSettings['global_character_set'];
+
+	return '[html]' . strtr(htmlspecialchars($matches[1], ENT_QUOTES, $charset), array('\\&quot;' => '&quot;', '&amp;#13;' => '<br />', '&amp;#32;' => ' ', '&amp;#91;' => '[', '&amp;#93;' => ']')) . '[/html]';
+}
+
+function time_format__preg_callback($matches)
+{
+	return '[time]' . timeformat($matches[1], false) . '[/time]';
+}]]></add>
+		</operation>
+	</file>
+
+	<!-- This one doesn't have a version number! -->
+	<file name="$themedir/scripts/editor.js">
+		<operation>
+			<search position="replace"><![CDATA[// If FF trick the cursor into coming back!
+			if (is_ff || is_opera)
+			{
+				// For some entirely unknown reason FF3 Beta 2 and some Opera versions
+				// require this.
+				this.oFrameDocument.body.contentEditable = false;
+
+				this.oFrameDocument.designMode = 'off';
+				this.oFrameDocument.designMode = 'on';
+			}]]></search>
+			<add><![CDATA[// This used to be the home of a slightly ugly bug in Firefox (but it's long gone)]]></add>
+		</operation>
+	</file>
+
+	<!-- Update the copyright year, yay copyright -->
+	<file name="$languagedir/index.english.php">
+		<operation error="ignore">
+			<search position="replace"><![CDATA[// Version: 2.0.4; index]]></search>
+			<add><![CDATA[// Version: 2.0.8; index]]></add>
+		</operation>
+		<operation error="ignore">
+			<search position="replace"><![CDATA[ <a href="http://www.simplemachines.org/about/smf/license.php" title="License" target="_blank" class="new_win">SMF &copy; 2013</a>, <a href="http://www.simplemachines.org" title="Simple Machines" target="_blank" class="new_win">Simple Machines</a>';]]></search>
+			<add><![CDATA[ <a href="http://www.simplemachines.org/about/smf/license.php" title="License" target="_blank" class="new_win">SMF &copy; 2014</a>, <a href="http://www.simplemachines.org" title="Simple Machines" target="_blank" class="new_win">Simple Machines</a>';]]></add>
+		</operation>
+	</file>
+
+	<!-- This is a potentially performance wrecking thing to do -->
+	<file name="$sourcedir/Subs-Db-mysql.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.4
+]]></search>
+			<add><![CDATA[
+ * @copyright 2011 Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 2.0.8
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[	// Decide which connection to use.
+	$connection = $connection == null ? $db_connection : $connection;]]></search>
+			<add><![CDATA[	// Decide which connection to use.
+	$connection = $connection == null ? $db_connection : $connection;
+
+	// Special queries that need processing.
+	$replacements = array(
+		'alter_table_boards' => array(
+			'~(.+)~' => '',
+		),
+		'boardindex_fetch_boards' => array(
+			'~(.)$~' => '$1 ORDER BY b.board_order',
+		),
+		'messageindex_fetch_boards' => array(
+			'~(.)$~' => '$1 ORDER BY b.board_order',
+		),
+		'order_by_board_order' => array(
+			'~(.)$~' => '$1 ORDER BY b.board_order',
+		),
+	);
+
+	if (isset($replacements[$identifier]))
+		$db_string = preg_replace(array_keys($replacements[$identifier]), array_values($replacements[$identifier]), $db_string);
+
+	if (trim($db_string) == '')
+		return false;]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Memberlist.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @version 2.0.2
+]]></search>
+			<add><![CDATA[
+ * @version 2.0.8
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+		$_POST['fields'] = isset($_GET['fields']) ? explode(',', $_GET['fields']) : $_POST['fields'];
+]]></search>
+			<add><![CDATA[
+
+		if (!get_magic_quotes_gpc())
+		{
+			// Escape things just in case...
+			if (isset($_GET['fields']))
+			{
+				$_POST['fields'] = explode(',', addslashes($_GET['fields']));
+			}
+			else
+			{
+				$temp = implode(',', $_POST['fields']);
+				$_POST['fields'] = explode(',', addslashes($temp));
+			}
+		}
+		else
+			$_POST['fields'] = isset($_GET['fields']) ? explode(',', $_GET['fields']) : $_POST['fields'];
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+		// Search for a name?
+		if (in_array('name', $_POST['fields']))
+			$fields = array('member_name', 'real_name');
+		else
+			$fields = array();
+		// Search for messengers...
+		if (in_array('messenger', $_POST['fields']) && (!$user_info['is_guest'] || empty($modSettings['guest_hideContacts'])))
+			$fields += array(3 => 'msn', 'aim', 'icq', 'yim');
+		// Search for websites.
+		if (in_array('website', $_POST['fields']))
+			$fields += array(7 => 'website_title', 'website_url');
+		// Search for groups.
+		if (in_array('group', $_POST['fields']))
+			$fields += array(9 => 'IFNULL(group_name, {string:blank_string})');
+]]></search>
+		<add><![CDATA[
+		$search_fields = array();
+
+		// Search for a name?
+		if (in_array('name', $_POST['fields']))
+		{
+			$fields = array('member_name', 'real_name');
+			$search_fields[] = 'name';
+		}
+		else
+			$fields = array();
+		// Search for messengers...
+		if (in_array('messenger', $_POST['fields']) && (!$user_info['is_guest'] || empty($modSettings['guest_hideContacts'])))
+		{
+			$fields += array(3 => 'msn', 'aim', 'icq', 'yim');
+			$search_fields[] = 'messenger';
+		}
+		// Search for websites.
+		if (in_array('website', $_POST['fields']))
+		{
+			$fields += array(7 => 'website_title', 'website_url');
+			$search_fields[] = 'website';
+		}
+		// Search for groups.
+		if (in_array('group', $_POST['fields']))
+		{
+			$fields += array(9 => 'IFNULL(group_name, {string:blank_string})');
+			$search_fields[] = 'group';
+		}
+]]></add>
+		</operation>
+		<operation>
+			<search position="after"><![CDATA[
+			$condition = allowedTo('moderate_forum') ? '' : ')';
+]]></search>
+			<add><![CDATA[
+			$search_fields[] = 'email';
+]]></add>
+		</operation>
+		<operation>
+			<search position="before"><![CDATA[
+				$fields += array($customCount++ => 'IFNULL(t' . $curField . '.value, {string:blank_string})');
+]]></search>
+			<add><![CDATA[
+				$search_fields[] = $field;
+]]></add>
+		</operation>
+		<operation>
+			<search position="after"><![CDATA[
+		$query = $_POST['search'] == '' ? '= {string:blank_string}' : 'LIKE {string:search}';
+]]></search>
+			<add><![CDATA[
+		// No search fields? That means you're trying to hack things
+		if (empty($search_fields))
+			fatal_lang_error('invalid_search_string', false); 
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+		$context['page_index'] = constructPageIndex($scripturl . '?action=mlist;sa=search;search=' . $_POST['search'] . ';fields=' . implode(',', $_POST['fields']), $_REQUEST['start'], $numResults, $modSettings['defaultMaxMembers']);
+]]></search>
+			<add><![CDATA[
+		$context['page_index'] = constructPageIndex($scripturl . '?action=mlist;sa=search;search=' . $_POST['search'] . ';fields=' . implode(',', $search_fields), $_REQUEST['start'], $numResults, $modSettings['defaultMaxMembers']);
+]]></add>
+		</operation>
+	</file>
+</modification>

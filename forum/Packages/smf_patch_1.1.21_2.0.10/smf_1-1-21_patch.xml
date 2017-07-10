@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!DOCTYPE modification SYSTEM "http://www.simplemachines.org/xml/modification">
+<modification xmlns="http://www.simplemachines.org/xml/modification" xmlns:smf="http://www.simplemachines.org/">
+	<id>smf:smf-1.1.21</id>
+	<version>1.0</version>
+
+	<!-- Usual version update -->
+	<file name="$boarddir/index.php">
+		<operation>
+			<search position="replace"><![CDATA[
+* Software Version:           SMF 1.1.20                                          *
+]]></search>
+			<add><![CDATA[
+* Software Version:           SMF 1.1.21                                          *
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+$forum_version = 'SMF 1.1.20';
+]]></search>
+			<add><![CDATA[
+$forum_version = 'SMF 1.1.21';
+]]></add>
+		</operation>
+	</file>
+
+	<!-- 1.1.20 broke preview in Firefox -->
+	<file name="$themedir/Post.template.php">
+		<operation error="ignore">
+			<search position="replace"><![CDATA[
+// Version: 1.1.5; Post
+]]></search>
+			<add><![CDATA[
+// Version: 1.1.21; Post
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA["question", "topic"]]></search>
+			<add><![CDATA["question", "topic", "sc"]]></add>
+		</operation>
+	</file>
+
+	<!-- Update the copyright year -->
+	<file name="$languagedir/index.english.php">
+		<operation>
+			<search position="replace"><![CDATA[
+// Version: 1.1.18; index
+]]></search>
+			<add><![CDATA[
+// Version: 1.1.21; index
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[2013]]></search>
+			<add><![CDATA[2015]]></add>
+		</operation>
+	</file>
+</modification>

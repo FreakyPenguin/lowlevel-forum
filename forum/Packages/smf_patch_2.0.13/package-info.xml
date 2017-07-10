@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE package-info SYSTEM "http://www.simplemachines.org/xml/package-info">
+<package-info xmlns="http://www.simplemachines.org/xml/package-info" xmlns:smf="http://www.simplemachines.org/">
+	<id>smf:smf-2.0.13</id>
+	<name>SMF 2.0.13 Update</name>
+	<version>1.0</version>
+	<type>modification</type>
+
+	<install for="2.0.12">
+		<readme>readme.txt</readme>
+		<modification type="file" format="xml">smf_2-0-13_patch.xml</modification>
+
+		<!-- Update the max year for the calendar. -->
+		<code type="inline"><![CDATA[<?php
+			global $boarddir, $modSettings;
+			require_once($boarddir . '/SSI.php');
+
+			if (!empty($modSettings['cal_maxyear']) && (int) $modSettings['cal_maxyear'] < 2030)
+				updateSettings(array('cal_maxyear' => 2030));
+		]]></code>
+	</install>
+	<uninstall for="2.0.13">
+		<readme type="inline">
+			This will uninstall the security fixes of your SMF 2.0.13 forum. This is generally NOT a good idea.
+		</readme>
+		<modification type="file" reverse="true" format="xml">smf_2-0-13_patch.xml</modification>
+	</uninstall>
+</package-info>

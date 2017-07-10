@@ -1,0 +1,614 @@
+<?xml version="1.0"?>
+<!DOCTYPE modification SYSTEM "http://www.simplemachines.org/xml/modification">
+<modification xmlns="http://www.simplemachines.org/xml/modification" xmlns:smf="http://www.simplemachines.org/">
+	<id>smf:smf-2.0.10</id>
+	<version>1.0</version>
+
+	<!-- Usual version update -->
+	<file name="$boarddir/index.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @version 2.0.9
+]]></search>
+			<add><![CDATA[
+ * @version 2.0.10
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+$forum_version = 'SMF 2.0.9';
+]]></search>
+			<add><![CDATA[
+$forum_version = 'SMF 2.0.10';
+]]></add>
+		</operation>
+	</file>
+
+	<!-- Update the copyright year -->
+	<file name="$languagedir/index.english.php">
+		<operation>
+			<search position="replace"><![CDATA[// Version: 2.0.8;]]></search>
+			<add><![CDATA[// Version: 2.0.10;]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[2014]]></search>
+			<add><![CDATA[2015]]></add>
+		</operation>
+	</file>
+
+	<!--
+		- Can't use WYSIWYG editor in Pale Moon browser
+		- Search dialogue can overflow inappropriately
+		- Forum Maintenance - Topics fails if header is collapsed
+ -->
+	<file name="$themedir/scripts/script.js">
+		<operation>
+			<search position="replace"><![CDATA[var is_ff = (ua.indexOf('firefox') != -1 || ua.indexOf('iceweasel') != -1 || ua.indexOf('icecat') != -1 || ua.indexOf('shiretoko') != -1 || ua.indexOf('minefield') != -1) && !is_opera;]]></search>
+			<add><![CDATA[var is_ff = (ua.indexOf('firefox') != -1 || ua.indexOf('iceweasel') != -1 || ua.indexOf('icecat') != -1 || ua.indexOf('shiretoko') != -1 || ua.indexOf('minefield') != -1 || ua.indexOf('PaleMoon') != -1) && !is_opera;]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[if ('oThemeOptions' in this.opt && this.opt.oThemeOptions.bUseThemeSettings)]]></search>
+			<add><![CDATA[if (!bInit && 'oThemeOptions' in this.opt && this.opt.oThemeOptions.bUseThemeSettings)]]></add>
+		</operation>
+	</file>
+	<file name="$themedir/Search.template.php">
+		<operation error="ignore">
+			<search position="replace"><![CDATA[
+ * @version 2.0
+]]></search>
+			<add><![CDATA[
+ * @version 2.0.10
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+								<li class="board" style="margin-', $context['right_to_left'] ? 'right' : 'left', ': ', $board['child_level'], 'em;">
+									<label for="brd', $board['id'], '"><input type="checkbox" id="brd', $board['id'], '" name="brd[', $board['id'], ']" value="', $board['id'], '"', $board['selected'] ? ' checked="checked"' : '', ' class="input_check" /> ', $board['name'], '</label>
+								</li>';
+]]></search>
+			<add><![CDATA[
+								<li class="board">
+									<label for="brd', $board['id'], '" style="margin-', $context['right_to_left'] ? 'right' : 'left', ': ', $board['child_level'], 'em;"><input type="checkbox" id="brd', $board['id'], '" name="brd[', $board['id'], ']" value="', $board['id'], '"', $board['selected'] ? ' checked="checked"' : '', ' class="input_check" /> ', $board['name'], '</label>
+								</li>';
+]]></add>
+		</operation>
+	</file>
+
+	<!-- Excessive line in ManageServer.php in the patch upgrade from 2.0.8 -->
+	<file name="$sourcedir/ManageServer.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @version 2.0.9
+]]></search>
+			<add><![CDATA[
+ * @version 2.0.10
+]]></add>
+		</operation>
+		<operation error="ignore">
+			<search position="replace"><![CDATA[
+					$context['config_vars'][$config_var[1]]['value'] = unserialize($context['config_vars'][$config_var[1]]['value']);
+					$context['config_vars'][$config_var[1]]['value'] = !empty($context['config_vars'][$config_var[1]]['value']) ? unserialize($context['config_vars'][$config_var[1]]['value']) : array();
+]]></search>
+			<add><![CDATA[
+					$context['config_vars'][$config_var[1]]['value'] = !empty($context['config_vars'][$config_var[1]]['value']) ? unserialize($context['config_vars'][$config_var[1]]['value']) : array();
+]]></add>
+		</operation>
+	</file>
+
+	<!-- HTML tag broken in 2.0.9 install package... -->
+	<file name="$sourcedir/Subs-Post.php">
+		<operation error="ignore">
+			<search position="replace"><![CDATA[
+ * @version 2.0.9
+]]></search>
+			<add><![CDATA[
+ * @version 2.0.10
+]]></add>
+		</operation>
+		<operation error="ignore"><!-- This is only broken on some 2.0.9 installs... -->
+			<search position="replace"><![CDATA[
+						$htmlfunc = create_function('$m', 'return \'[html]\' . strtr(un_htmlspecialchars("$m[1]"), array("\n" => \'&#13;\', \' \' => \' &#32;\', \'[\' => \'&#91;\', \']\' => \'&#93;\')) . \'[/html]\';');
+]]></search>
+			<add><![CDATA[
+						$htmlfunc = create_function('$m', 'return \'[html]\' . strtr(un_htmlspecialchars("$m[1]"), array("\n" => \'&#13;\', \'  \' => \' &#32;\', \'[\' => \'&#91;\', \']\' => \'&#93;\')) . \'[/html]\';');
+]]></add>
+		</operation>
+	</file>
+
+	<!-- Wrong link in ManageAttachments -->
+	<file name="$sourcedir/ManageAttachments.php">
+		<operation error="ignore">
+			<search position="replace"><![CDATA[
+ * @version 2.0
+]]></search>
+			<add><![CDATA[
+ * @version 2.0.10
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$date .= sprintf(\'<br />%1$s <a href="%2$s?topic=%3$d.0.msg%4$d#msg%4$d">%5$s</a>\', $txt[\'in\'], $scripturl, $rowData[\'id_topic\'], $rowData[\'id_msg\'], $rowData[\'subject\']);]]></search>
+			<add><![CDATA[$date .= sprintf(\'<br />%1$s <a href="%2$s?topic=%3$d.msg%4$d#msg%4$d">%5$s</a>\', $txt[\'in\'], $scripturl, $rowData[\'id_topic\'], $rowData[\'id_msg\'], $rowData[\'subject\']);]]></add>
+		</operation>
+	</file>
+
+	<!-- Error suppression missing in Subs-Package -->
+	<file name="$sourcedir/Subs-Package.php">
+		<operation error="ignore">
+			<search position="replace"><![CDATA[
+ * @version 2.0.9
+]]></search>
+			<add><![CDATA[
+ * @version 2.0.10
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+		// Windows doesn't seem to care about the memory_limit.
+		if (!empty($modSettings['package_disable_cache']) || ini_set('memory_limit', '128M') !== false || strpos(strtolower(PHP_OS), 'win') !== false)
+]]></search>
+			<add><![CDATA[
+		// Windows doesn't seem to care about the memory_limit.
+		if (!empty($modSettings['package_disable_cache']) || @ini_set('memory_limit', '128M') !== false || strpos(strtolower(PHP_OS), 'win') !== false)
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+		// Try to increase the memory limit - we don't want to run out of ram!
+		if (!empty($modSettings['package_disable_cache']) || ini_set('memory_limit', '128M') !== false || strpos(strtolower(PHP_OS), 'win') !== false)
+]]></search>
+			<add><![CDATA[
+		// Try to increase the memory limit - we don't want to run out of ram!
+		if (!empty($modSettings['package_disable_cache']) || @ini_set('memory_limit', '128M') !== false || strpos(strtolower(PHP_OS), 'win') !== false)
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+		if ($current['type'] == 5 && substr($current['filename'], -1) != '/')
+			$current['filename'] .= '/';
+
+		foreach ($current as $k => $v)
+		{
+			if (in_array($k, $octdec))
+				$current[$k] = octdec(trim($v));
+			else
+				$current[$k] = trim($v);
+		}
+]]></search>
+			<add><![CDATA[
+		foreach ($current as $k => $v)
+		{
+			if (in_array($k, $octdec))
+				$current[$k] = octdec(trim($v));
+			else
+				$current[$k] = trim($v);
+		}
+
+		if ($current['type'] == 5 && substr($current['filename'], -1) != '/')
+			$current['filename'] .= '/';
+]]></add>
+		</operation>
+	</file>
+
+	<!-- Something went sour on the 2.0.9 patch... -->
+	<file name="$sourcedir/Post.php">
+		<operation error="ignore">
+			<search position="replace"><![CDATA[
+ * @version 2.0.9
+]]></search>
+			<add><![CDATA[
+ * @version 2.0.10
+]]></add>
+		</operation>
+		<operation error="ignore">
+			<search position="replace"><![CDATA[
+	if (isset($_REQUEST['preview']))
+	{
+		checkSession();
+		return Post();
+	}
+]]></search>
+			<add><![CDATA[
+	if (isset($_REQUEST['preview']))
+	{
+		if (checkSession('post', '', false) != '')
+		{
+			loadLanguage('Errors');
+			$context['post_errors']['message'][] = $txt['error_session_timeout'];
+			unset ($_POST['preview'], $_REQUEST['xml']); // just in case
+		}
+		return Post();
+	}
+]]></add>
+		</operation>
+	</file>
+
+	<!-- So Chrome doesn't like opacity anymore? Way to go Google... -->
+	<file name="$themedir/scripts/fader.js">
+		<operation>
+			<search position="replace"><![CDATA[
+	// Try to find the fore- and background colors.
+	if ('currentStyle' in this.oFaderHandle)
+]]></search>
+			<add><![CDATA[
+	// Try to find the fore- and background colors.
+	var modern_browser = 'MozOpacity' in this.oFaderHandle.style || 'Opacity' in this.oFaderHandle.style || 'filter' in this.oFaderHandle.style;
+	if ('currentStyle' in this.oFaderHandle && !modern_browser)
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+	else if (!('opera' in window) && 'defaultView' in document)
+]]></search>
+			<add><![CDATA[
+	else if (!('opera' in window) && 'defaultView' in document && !modern_browser)
+]]></add>
+		</operation>
+	</file>
+
+	<!-- 2.0.9 broke preview in Firefox -->
+	<file name="$themedir/Post.template.php">
+		<operation error="ignore">
+			<search position="replace"><![CDATA[
+ * @version 2.0
+]]></search>
+			<add><![CDATA[
+ * @version 2.0.10
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[\'question\', \'topic\']]></search>
+			<add><![CDATA[\'question\', \'topic\', ', JavaScriptEscape($context['session_var']), ']]></add>
+		</operation>
+	</file>
+
+	<!-- We have a loooong history of issues with recurring payments with Paypal -->
+	<file name="$sourcedir/Subscriptions-PayPal.php">
+		<operation error="ignore">
+			<search position="replace"><![CDATA[
+ * @version 2.0.3
+]]></search>
+			<add><![CDATA[
+ * @version 2.0.10
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+		$setting_data = array(
+			array('text', 'paypal_email', 'subtext' => $txt['paypal_email_desc']),
+		);
+]]></search>
+			<add><![CDATA[
+		/// We add email and additional emails (the latter for recurring payments)
+		$setting_data = array(
+			array('text', 'paypal_email', 'subtext' => $txt['paypal_email_desc']),
+			array('text', 'paypal_additional_emails', 'subtext' =>  $txt['paypal_additional_emails_desc']),
+		);
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+		if (strtolower($_POST['mc_currency']) != $modSettings['paid_currency_code'])
+]]></search>
+			<add><![CDATA[
+		if (strtolower($_POST['mc_currency']) != strtolower($modSettings['paid_currency_code']))
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+		if ($modSettings['paypal_email'] != $_POST['business'] && (empty($modSettings['paypal_additional_emails']) || !in_array($_POST['business'], explode(',', $modSettings['paypal_additional_emails']))))
+			return false;
+]]></search>
+			<add><![CDATA[
+		if (strtolower($modSettings['paypal_email']) != strtolower($_POST['business']) && (empty($modSettings['paypal_additional_emails']) || !in_array(strtolower($_POST['business']), explode(',', strtolower($modSettings['paypal_additional_emails'])))))
+			return false;
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+		// Check that this is intended for us.
+		if ($modSettings['paypal_email'] != $_POST['business'] && (empty($modSettings['paypal_additional_emails']) || !in_array($_POST['business'], explode(',', $modSettings['paypal_additional_emails']))))
+]]></search>
+			<add><![CDATA[
+		// Check that this is intended for us.
+		if (strtolower($modSettings['paypal_email']) != strtolower($_POST['business']) && (empty($modSettings['paypal_additional_emails']) || !in_array(strtolower($_POST['business']), explode(',', strtolower($modSettings['paypal_additional_emails'])))))
+]]></add>
+		</operation>
+	</file>
+	<file name="$languagedir/ManagePaid.english.php">
+		<operation error="ignore">
+			<search position="replace"><![CDATA[
+// Version: 2.0; ManagePaid
+]]></search>
+			<add><![CDATA[
+// Version: 2.0.10; ManagePaid
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+$txt['paid_note'] = '<strong class="alert">Note:</strong><br />For subscriptions to be automatically updated for your users, you
+	will need to setup a return URL for each of your payment methods. For all payment types, this return URL should be set as:<br /><br />
+	&nbsp;&nbsp;&bull;&nbsp;&nbsp;<strong>' . $boardurl . '/subscriptions.php</strong><br /><br />
+	You can edit the link for paypal directly, by clicking <a href="https://www.paypal.com/us/cgi-bin/webscr?cmd=_profile-ipn-notify" target="_blank">here</a>.<br />
+	For the other gateways (If installed) you can normally find it in your customer panels, usually under the term &quot;Return URL&quot; or &quot;Callback URL&quot;.';
+]]>
+</search>
+			<add><![CDATA[
+$txt['paid_note'] = '<strong class="alert">Note:</strong><br />
+SMF currently supports <strong>PayPal</strong> as the installed payment method.<br />
+	&nbsp;&nbsp;&bull;&nbsp;&nbsp;It is not necessary to enable IPN in your PayPal account; if you do, the forum will receive payment notifications for all payments made to your account, and this will generate Paid Subscriptions errors for payments that are not subscription related.<br />
+	&nbsp;&nbsp;&bull;&nbsp;&nbsp;You must have a business or premier account to use recurring payments.<br />
+	&nbsp;&nbsp;&bull;&nbsp;&nbsp;You must provide your primary PayPal email address for validation purposes.<br /><br />
+
+If you install a different payment gateway, you may need to set up a return URL for payment notification.   For all payment types, this return URL should be set as:<br /><br />
+	&nbsp;&nbsp;&bull;&nbsp;&nbsp;<strong>' . $boardurl . '/subscriptions.php</strong><br /><br />
+You can normally find it in your customer panels, usually under the term &quot;Return URL&quot; or &quot;Callback URL&quot;.<br /><br /><br />';
+
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+// View subscription strings.
+]]></search>
+			<add><![CDATA[
+$txt['paypal_additional_emails'] = 'Primary PayPal email address';
+$txt['paypal_additional_emails_desc'] = 'If different (for business account)';
+
+// View subscription strings.
+]]></add>
+		</operation>
+	</file>
+	<file name="$languagedir/ManagePaid.english-utf8.php" error="skip">
+		<operation error="ignore">
+			<search position="replace"><![CDATA[
+// Version: 2.0; ManagePaid
+]]></search>
+			<add><![CDATA[
+// Version: 2.0.10; ManagePaid
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+// View subscription strings.
+]]></search>
+			<add><![CDATA[
+$txt['paypal_additional_emails'] = 'Primary PayPal email address';
+$txt['paypal_additional_emails_desc'] = 'If different (for business account)';
+
+// View subscription strings.
+]]></add>
+		</operation>
+	</file>
+
+	<!-- It seems we forgot to sanitize redirect? -->
+	<file name="$sourcedir/Packages.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @version 2.0.9
+]]></search>
+			<add><![CDATA[
+ * @version 2.0.10
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[$context['redirect_text'] = !empty($action['filename']) && file_exists($boarddir . '/Packages/temp/' . $context['base_path'] . $action['filename']) ? file_get_contents($boarddir . '/Packages/temp/' . $context['base_path'] . $action['filename']) : ($context['uninstalling'] ? $txt['package_uninstall_done'] : $txt['package_installed_done']);]]></search>
+			<add><![CDATA[$context['redirect_text'] = !empty($action['filename']) && file_exists($boarddir . '/Packages/temp/' . $context['base_path'] . $action['filename']) ? $smcFunc['htmlspecialchars'](file_get_contents($boarddir . '/Packages/temp/' . $context['base_path'] . $action['filename'])) : ($context['uninstalling'] ? $txt['package_uninstall_done'] : $txt['package_installed_done']);]]></add>
+		</operation>
+	</file>
+
+	<!-- SSI.php doesn't handle "hide results until user has voted" properly -->
+	<file name="$boarddir/SSI.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @version 2.0.7
+]]></search>
+			<add><![CDATA[
+ * @version 2.0.10
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+	// Check if they can vote.
+]]></search>
+			<add><![CDATA[
+	// Check if they can vote.
+	$already_voted = false;
+]]></add>
+		</operation>
+		<operation>
+			<search><![CDATA[
+	elseif ($user_info['is_guest'] && $row['guest_vote'] && (!isset($_COOKIE['guest_poll_vote']) || !in_array($row['id_poll'], explode(',', $_COOKIE['guest_poll_vote']))))
+		$allow_vote = true;
+	elseif ($user_info['is_guest'])
+		$allow_vote = false;
+]]></search>
+			<add><![CDATA[
+	elseif ($user_info['is_guest'])
+	{
+		// There's a difference between "allowed to vote" and "already voted"...
+		$allow_vote = $row['guest_vote'];
+
+		// Did you already vote?
+		if (isset($_COOKIE['guest_poll_vote']) && in_array($row['id_poll'], explode(',', $_COOKIE['guest_poll_vote'])))
+		{
+			$already_voted = true;
+		}
+	}
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+		$allow_vote = $smcFunc['db_num_rows']($request) == 0;
+]]></search>
+			<add><![CDATA[
+		$allow_vote = $smcFunc['db_num_rows']($request) == 0;
+		$already_voted = $allow_vote;
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+	$allow_view_results = allowedTo('moderate_board') || $row['hide_results'] == 0 || ($row['hide_results'] == 1 && !$allow_vote) || $is_expired;
+]]></search>
+			<add><![CDATA[
+	$allow_view_results = allowedTo('moderate_board') || $row['hide_results'] == 0 || ($row['hide_results'] == 1 && $already_voted) || $is_expired;
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+	elseif ($return['allow_view_results'])
+]]></search>
+			<add><![CDATA[
+	else
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+		foreach ($return['options'] as $option)
+			echo '
+					<dt>', $option['option'], '</dt>
+					<dd>
+]]></search>
+			<add><![CDATA[
+		foreach ($return['options'] as $option)
+		{
+			echo '
+					<dt>', $option['option'], '</dt>
+					<dd>';
+
+			if ($return['allow_view_results'])
+			{
+				echo '
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+						', $option['votes'], ' (', $option['percent'], '%)
+					</dd>';
+		echo '
+				</dl>
+				<strong>', $txt['poll_total_voters'], ': ', $return['total_votes'], '</strong>
+]]></search>
+			<add><![CDATA[
+						', $option['votes'], ' (', $option['percent'], '%)';
+			}
+
+			echo '
+					</dd>';
+		}
+
+		echo '
+				</dl>', ($return['allow_view_results'] ? '
+				<strong>'. $txt['poll_total_voters'] .': '. $return['total_votes'] .'</strong>' : ''), '
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+	}
+	// Cannot see it I'm afraid!
+	else
+		echo $txt['poll_cannot_see'];
+]]></search>
+			<add><![CDATA[
+	}
+]]></add>
+		</operation>
+	</file>
+
+	<!-- Fix for unsupported UTF8mb4 characters, courtesy of Arantor -->
+	<file name="$sourcedir/Load.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @version 2.0.9
+]]></search>
+			<add><![CDATA[
+ * @version 2.0.10
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[return ' . strtr($ent_check[0], array('&' => '&amp;')) . 'htmlspecialchars($string, $quote_style, ' . ($utf8 ? '\'UTF-8\'' : '$charset') . ')' . $ent_check[1] . ';'),]]></search>
+			<add><![CDATA[return ' . ($utf8 ? '$smcFunc[\'fix_utf8mb4\'](' : '') . strtr($ent_check[0], array('&' => '&amp;')) . 'htmlspecialchars($string, $quote_style, ' . ($utf8 ? '\'UTF-8\'' : '$charset') . ')' . $ent_check[1] . ($utf8 ? ')' : '') . ';'),
+		'fix_utf8mb4' => create_function('$string', '
+			$i = 0;
+			$len = strlen($string);
+			$new_string = \'\';
+			while ($i < $len)
+			{
+				$ord = ord($string[$i]);
+				if ($ord < 128)
+				{
+					$new_string .= $string[$i];
+					$i++;
+				}
+				elseif ($ord < 224)
+				{
+					$new_string .= $string[$i] . $string[$i+1];
+					$i += 2;
+				}
+				elseif ($ord < 240)
+				{
+					$new_string .= $string[$i] . $string[$i+1] . $string[$i+2];
+					$i += 3;
+				}
+				elseif ($ord < 248)
+				{
+					// Magic happens.
+					$val = (ord($string[$i]) & 0x07) << 18;
+					$val += (ord($string[$i+1]) & 0x3F) << 12;
+					$val += (ord($string[$i+2]) & 0x3F) << 6;
+					$val += (ord($string[$i+3]) & 0x3F);
+					$new_string .= \'&#\' . $val . \';\';
+					$i += 4;
+				}
+			}
+			return $new_string;'),]]></add>
+		</operation>
+	</file>
+
+	<!-- Long standing problem with ManageNews and PostgreSQL -->
+	<file name="$sourcedir/ManageNews.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @version 2.0.5
+]]></search>
+			<add><![CDATA[
+ * @version 2.0.10
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+			AND (COALESCE(bg.expire_time, 1=1) OR bg.expire_time > {int:current_time})
+]]></search>
+			<add><![CDATA[
+			AND (bg.expire_time IS NULL OR bg.expire_time > {int:current_time})
+]]></add>
+		</operation>
+	</file>
+
+	<!-- Long standing problem with Smiley sets and PostgreSQL -->
+	<file name="$sourcedir/DbPackages-postgresql.php">
+		<operation>
+			<search position="replace"><![CDATA[
+ * @version 2.0
+]]></search>
+			<add><![CDATA[
+ * @version 2.0.10
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+			$setTo = isset($column_info['default']) ? $column_info['default'] : '';
+]]></search>
+			<add><![CDATA[
+			$setTo = isset($column_info['default']) ? $column_info['default'] : (strpos($old_info['type'], 'int') !== false ? 0 : '');
+]]></add>
+		</operation>
+		<operation>
+			<search position="replace"><![CDATA[
+				WHERE ' . $column_info['name'] . ' = NULL',
+]]></search>
+			<add><![CDATA[
+				WHERE ' . $column_info['name'] . ' IS NULL',
+]]></add>
+		</operation>
+	</file>
+
+</modification>
