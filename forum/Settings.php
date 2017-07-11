@@ -29,7 +29,7 @@ $mmessage = 'Don\'t worry, we will be back shortly with an updated forum.  It wi
 
 ########## Forum Info ##########
 $mbname = 'Lowlevel';		# The name of your forum.
-$language = 'german-utf8';		# The default language file set for the forum.
+$language = 'german_informal-utf8';		# The default language file set for the forum.
 $boardurl = 'https://forum.lowlevel.eu';		# URL to your forum's folder. (without the trailing /!)
 $webmaster_email = 'forum@lowlevel.eu';		# Email address to send emails from. (like noreply@yourdomain.com.)
 $cookiename = 'SMFCookie11';		# Name of the cookie to set for authentication.

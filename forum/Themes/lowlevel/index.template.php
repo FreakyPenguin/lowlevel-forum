@@ -239,7 +239,7 @@ function template_body_above()
 	// Otherwise they're a guest - this time ask them to either register or login - lazy bums...
 	elseif (!empty($context['show_login_bar']))
 	{
-		echo '<br /><br />',sprintf($txt['welcome_guest'], $txt['guest_title']);
+		echo '<br />',sprintf($txt['welcome_guest'], $txt['guest_title']);
 	}
 
 		echo '

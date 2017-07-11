@@ -278,8 +278,8 @@ $txt['package_upload_error_exists'] = 'Die Datei, die Sie hochladen möchten, ex
 $txt['package_upload_error_supports'] = 'Der Paketmanager erlaubt momentan nur folgende Dateitypen: %1$s.';
 $txt['package_upload_error_broken'] = 'Das Hochladen des Pakets ist aufgrund folgenden Fehlers fehlgeschlagen:<br />"%1$s"';
 
-$txt['package_get_error_not_found'] = 'Das Packet, dass sie versuchen zu installieren konnte nicht gefunden werden. Vielleicht möchtest du das Packet manuell in dein Packages Verzeichnis hochladen.';
-$txt['package_get_error_missing_xml'] = 'Das Paket das sie versuchen zu installieren hat keine package-info.xml in dessen Hauptverzeichnis.';
+$txt['package_get_error_not_found'] = 'Das Paket, das sie versuchen zu installieren, konnte nicht gefunden werden. Vielleicht möchten Sie das Paket manuell in Ihr Packages Verzeichnis hochladen.';
+$txt['package_get_error_missing_xml'] = 'Das Paket, das Sie versuchen zu installieren, hat keine package-info.xml in dessen Hauptverzeichnis.';
 $txt['package_get_error_is_zero'] = 'Auch wenn das Paket auf den Server heruntergeladen wurde scheint es leer zu sein. Bitte überprüfen sie dass der Packages Ordner und das "temp" Unterverzeichnis beschreibbar sind. Sollten sie dieses Problem weiterhin haben sollten sie versuchen das Paket auf ihrem eigenen rechner zu entpacken und in ein neues Unterverzeichnis in das Package Verzeichnis hochladen. Wenn das Paket zum Beispiel shout.tar.gt heißt sollten sie:<br/>1) Das Paket auf ihren PC herunterladen und entpacken.<br/>2) Mit einem FTP Programm ein neues Verzeichnis im "Packages" Ordner erstellen und dieses, in unserem Beispiel, "shout" nennen.<br/>3) Laden sie alle entpackten Dateien in dieses Verzeichnis.<br/>4) Gehen sie zurück zum Paket Manager und prüfen sie ob das Paket automatisch gefunden wurde (dies sollte der Fall sein).';
 $txt['package_get_error_packageinfo_corrupt'] = 'Es konnte keine gültige Information in der package-info.xml Datei des Paketes gefunden werden. Die Modifikation könnte fehlerhaft sein oder das Paket ist fehlerhaft.';
 
