@@ -1348,7 +1348,8 @@ function smtp_mail($mail_to_array, $subject, $message, $headers)
 		// !!! These should send the CURRENT server's name, not the mail server's!
 
 		// EHLO could be understood to mean encrypted hello...
-		if (server_parse('EHLO ' . $modSettings['smtp_host'], $socket, null) == '250')
+		$ehlo_host = preg_replace('/^.*:\/\//', '', $modSettings['smtp_host']);
+		if (server_parse('EHLO ' . $ehlo_host, $socket, null) == '250')
 		{
 			if (!server_parse('AUTH LOGIN', $socket, '334'))
 				return false;
