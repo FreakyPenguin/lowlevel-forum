@@ -3,6 +3,7 @@ RUN apk add --no-cache \
         freetype-dev \
         libjpeg-turbo-dev \
         libpng-dev \
+        oniguruma-dev \
         bind-tools \
     && docker-php-ext-install -j4 mysqli gd mbstring opcache
 COPY php/docker-forum-php-entrypoint /usr/local/bin/
